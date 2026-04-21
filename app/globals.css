@@ -661,17 +661,22 @@ section {
 /* ── HEADSHOT ── */
 .headshot-wrap {
   margin-bottom: 28px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--border);
 }
 .headshot {
   width: 104px;
   height: 104px;
-  border-radius: 50%;
   object-fit: cover;
-  object-position: center 25%;
-  border: 2px solid var(--border);
+  object-position: center 30%;
   display: block;
   filter: grayscale(8%);
   transition: filter 0.3s;
+  transform: scale(1.5);
+  transform-origin: center 30%;
 }
 .headshot:hover { filter: grayscale(0%); }
 
