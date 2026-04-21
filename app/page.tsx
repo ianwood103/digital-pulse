@@ -346,36 +346,6 @@ export default function Home() {
               <div className="project-item">
                 <div>
                   <div className="project-name">
-                    Multi-Agent Coding System
-                    <span className="project-stack">Python · Claude API</span>
-                  </div>
-                  <div className="project-desc">
-                    Orchestrator / Architect / Engineer agent pipeline for
-                    autonomous code generation. Built on Claude&apos;s API with
-                    adversarial validation between agents.
-                  </div>
-                  <div className="exp-tags" style={{ marginTop: 10 }}>
-                    <span className="tag">Claude API</span>
-                    <span className="tag">Python</span>
-                    <span className="tag">Agents</span>
-                  </div>
-                </div>
-                <div className="project-meta">
-                  <span className="project-year">2024</span>
-                  <a
-                    href={GITHUB}
-                    className="project-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GitHub ↗
-                  </a>
-                </div>
-              </div>
-
-              <div className="project-item">
-                <div>
-                  <div className="project-name">
                     ianwood.dev
                     <span className="project-stack">
                       Claude Code · Vercel · CI/CD
@@ -393,7 +363,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="project-meta">
-                  <span className="project-year">2025</span>
+                  <span className="project-year">2026</span>
                   <a
                     href="https://ianwood.dev"
                     className="project-link"
