@@ -117,6 +117,14 @@ export default function Home() {
               >
                 GitHub ↗
               </a>
+              <a
+                href={LINKEDIN}
+                className="btn btn-outline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn ↗
+              </a>
             </div>
           </section>
 
