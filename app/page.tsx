@@ -1,12 +1,23 @@
 import Image from "next/image";
 import PortfolioEffects from "./portfolio-effects";
+import BookShelf from "./book-shelf";
+import { fetchBooks } from "./lib/books";
 
 const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 
-export default function Home() {
+export default async function Home() {
+  let booksData: Awaited<ReturnType<typeof fetchBooks>> = {
+    currentlyReading: [],
+    wantToRead: [],
+    readThisYear: [],
+  };
+  try {
+    booksData = await fetchBooks();
+  } catch {}
+
   return (
     <>
       <PortfolioEffects />
@@ -67,6 +78,9 @@ export default function Home() {
               </a>
               <a href="#certifications" data-section="certifications">
                 Certifications
+              </a>
+              <a href="#reading" data-section="reading">
+                Reading
               </a>
             </nav>
           </div>
@@ -444,6 +458,15 @@ export default function Home() {
                 </a>
               </div>
             </div>
+          </section>
+
+          <section id="reading" className="reveal">
+            <div className="section-label">Reading</div>
+            <BookShelf
+              currentlyReading={booksData.currentlyReading}
+              wantToRead={booksData.wantToRead}
+              readThisYear={booksData.readThisYear}
+            />
           </section>
         </main>
       </div>
