@@ -86,15 +86,6 @@ export default function BookShelf({
       </div>
 
       <div>
-        <div className="section-label">Want to Read</div>
-        <div className="book-grid">
-          {wantToReadCapped.map((b, i) => (
-            <BookCard key={b.guid ?? `${b.title}-${i}`} book={b} />
-          ))}
-        </div>
-      </div>
-
-      <div>
         <div className="section-label">Read in 2026</div>
         <div className="book-grid">
           {readThisYear.map((b, i) => (
@@ -103,6 +94,15 @@ export default function BookShelf({
               book={b}
               showStars
             />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="section-label">Want to Read</div>
+        <div className="book-grid">
+          {wantToReadCapped.map((b, i) => (
+            <BookCard key={b.guid ?? `${b.title}-${i}`} book={b} />
           ))}
         </div>
       </div>
