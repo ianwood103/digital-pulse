@@ -1,4 +1,5 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; }
 
 :root {
   --blue: #1a56db;
@@ -58,6 +59,10 @@ body {
 @media (hover: hover) and (pointer: fine) {
   body { cursor: none; }
   a, button, [role="button"] { cursor: none; }
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  .cursor, .cursor-ring { display: none; }
 }
 
 .layout {
@@ -685,9 +690,17 @@ section {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .main { padding: 40px 24px 80px; }
+  .main { padding: 40px 24px 80px; max-width: 100%; }
   .exp-item, .edu-item { grid-template-columns: 1fr; gap: 8px; }
   .exp-item::before { display: none; }
+  .project-item { grid-template-columns: 1fr; }
+  .project-meta { flex-direction: row; align-items: center; justify-content: flex-start; }
   .skills-grid { grid-template-columns: 1fr; }
   .hero-headline { font-size: 36px; }
+}
+
+@media (max-width: 480px) {
+  .hero-headline { font-size: 30px; }
+  .sidebar { padding: 24px 20px; }
+  .main { padding: 32px 20px 64px; }
 }

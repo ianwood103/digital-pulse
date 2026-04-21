@@ -4,48 +4,66 @@ import { useEffect } from "react";
 
 export default function PortfolioEffects() {
   useEffect(() => {
-    const cursor = document.getElementById("cursor");
-    const ring = document.getElementById("cursorRing");
     const indicator = document.getElementById("navIndicator");
     const nav = document.getElementById("mainNav");
 
-    let mx = -100,
-      my = -100,
-      rx = -100,
-      ry = -100;
-    let rafId = 0;
+    const isPointerFine = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
 
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (cursor) {
-        cursor.style.left = mx + "px";
-        cursor.style.top = my + "px";
-      }
-    };
+    let cleanupCursor = () => {};
 
-    const animateRing = () => {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      if (ring) {
-        ring.style.left = rx + "px";
-        ring.style.top = ry + "px";
-      }
+    if (isPointerFine) {
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+
+      let mx = -100,
+        my = -100,
+        rx = -100,
+        ry = -100;
+      let rafId = 0;
+
+      const onMove = (e: MouseEvent) => {
+        mx = e.clientX;
+        my = e.clientY;
+        if (cursor) {
+          cursor.style.left = mx + "px";
+          cursor.style.top = my + "px";
+        }
+      };
+
+      const animateRing = () => {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        if (ring) {
+          ring.style.left = rx + "px";
+          ring.style.top = ry + "px";
+        }
+        rafId = requestAnimationFrame(animateRing);
+      };
+
+      document.addEventListener("mousemove", onMove);
       rafId = requestAnimationFrame(animateRing);
-    };
 
-    document.addEventListener("mousemove", onMove);
-    rafId = requestAnimationFrame(animateRing);
+      const hoverTargets = document.querySelectorAll(
+        "a, button, .skill-list li, .project-item, .exp-item"
+      );
+      const addExpanded = () => cursor?.classList.add("expanded");
+      const removeExpanded = () => cursor?.classList.remove("expanded");
+      hoverTargets.forEach((el) => {
+        el.addEventListener("mouseenter", addExpanded);
+        el.addEventListener("mouseleave", removeExpanded);
+      });
 
-    const hoverTargets = document.querySelectorAll(
-      "a, button, .skill-list li, .project-item, .exp-item"
-    );
-    const addExpanded = () => cursor?.classList.add("expanded");
-    const removeExpanded = () => cursor?.classList.remove("expanded");
-    hoverTargets.forEach((el) => {
-      el.addEventListener("mouseenter", addExpanded);
-      el.addEventListener("mouseleave", removeExpanded);
-    });
+      cleanupCursor = () => {
+        cancelAnimationFrame(rafId);
+        document.removeEventListener("mousemove", onMove);
+        hoverTargets.forEach((el) => {
+          el.removeEventListener("mouseenter", addExpanded);
+          el.removeEventListener("mouseleave", removeExpanded);
+        });
+      };
+    }
 
     const reveals = document.querySelectorAll(".reveal");
     const revealObserver = new IntersectionObserver(
@@ -62,7 +80,7 @@ export default function PortfolioEffects() {
     reveals.forEach((el) => revealObserver.observe(el));
 
     const navLinks =
-      document.querySelectorAll<HTMLAnchorElement>('nav a[data-section]');
+      document.querySelectorAll<HTMLAnchorElement>("nav a[data-section]");
 
     const updateIndicator = (activeLink: HTMLAnchorElement) => {
       if (!nav || !indicator) return;
@@ -113,12 +131,7 @@ export default function PortfolioEffects() {
       const id = setTimeout(() => updateIndicator(firstActive), 100);
       return () => {
         clearTimeout(id);
-        cancelAnimationFrame(rafId);
-        document.removeEventListener("mousemove", onMove);
-        hoverTargets.forEach((el) => {
-          el.removeEventListener("mouseenter", addExpanded);
-          el.removeEventListener("mouseleave", removeExpanded);
-        });
+        cleanupCursor();
         navLinks.forEach((l) => l.removeEventListener("click", onNavClick));
         revealObserver.disconnect();
         sectionObserver.disconnect();
@@ -126,12 +139,7 @@ export default function PortfolioEffects() {
     }
 
     return () => {
-      cancelAnimationFrame(rafId);
-      document.removeEventListener("mousemove", onMove);
-      hoverTargets.forEach((el) => {
-        el.removeEventListener("mouseenter", addExpanded);
-        el.removeEventListener("mouseleave", removeExpanded);
-      });
+      cleanupCursor();
       navLinks.forEach((l) => l.removeEventListener("click", onNavClick));
       revealObserver.disconnect();
       sectionObserver.disconnect();
