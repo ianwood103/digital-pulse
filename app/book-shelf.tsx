@@ -77,7 +77,7 @@ export default function BookShelf({
   return (
     <div className="book-shelf">
       <div>
-        <div className="section-label">Currently Reading</div>
+        <div className="book-sub-label">Currently Reading</div>
         <div className="book-row">
           {currentlyReading.map((b, i) => (
             <BookCard key={b.guid ?? `${b.title}-${i}`} book={b} />
@@ -86,7 +86,7 @@ export default function BookShelf({
       </div>
 
       <div>
-        <div className="section-label">Read in 2026</div>
+        <div className="book-sub-label">Read in 2026</div>
         <div className="book-grid">
           {readThisYear.map((b, i) => (
             <BookCard
@@ -99,7 +99,7 @@ export default function BookShelf({
       </div>
 
       <div>
-        <div className="section-label">Want to Read</div>
+        <div className="book-sub-label">Want to Read</div>
         <div className="book-grid">
           {wantToReadCapped.map((b, i) => (
             <BookCard key={b.guid ?? `${b.title}-${i}`} book={b} />

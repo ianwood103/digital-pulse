@@ -743,7 +743,18 @@ section {
 }
 
 /* ── BOOKS ── */
-.book-shelf { display: flex; flex-direction: column; gap: 40px; }
+.book-shelf { display: flex; flex-direction: column; gap: 36px; }
+
+.book-sub-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  opacity: 0.75;
+}
 
 .book-row { display: flex; gap: 16px; flex-wrap: wrap; }
 
