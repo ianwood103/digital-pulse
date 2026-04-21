@@ -1,15 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function PortfolioEffects() {
+  const [isPointerFine, setIsPointerFine] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsPointerFine(
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    );
+  }, []);
+
   useEffect(() => {
     const indicator = document.getElementById("navIndicator");
     const nav = document.getElementById("mainNav");
-
-    const isPointerFine = window.matchMedia(
-      "(hover: hover) and (pointer: fine)"
-    ).matches;
 
     let cleanupCursor = () => {};
 
@@ -145,6 +150,8 @@ export default function PortfolioEffects() {
       sectionObserver.disconnect();
     };
   }, []);
+
+  if (!isPointerFine) return null;
 
   return (
     <>
