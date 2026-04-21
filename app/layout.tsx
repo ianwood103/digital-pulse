@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { EB_Garamond, DM_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,11 @@ const dmMono = DM_Mono({
   weight: ["300", "400"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "Ian Wood — Software Engineer",
