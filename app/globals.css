@@ -671,12 +671,12 @@ section {
   width: 104px;
   height: 104px;
   object-fit: cover;
-  object-position: 40% 30%;
+  object-position: 60% 30%;
   display: block;
   filter: grayscale(8%);
   transition: filter 0.3s;
   transform: scale(1.5);
-  transform-origin: 40% 30%;
+  transform-origin: 60% 30%;
 }
 .headshot:hover { filter: grayscale(0%); }
 
