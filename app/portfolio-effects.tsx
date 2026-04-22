@@ -47,7 +47,7 @@ export default function PortfolioEffects() {
     rafId = requestAnimationFrame(animateRing);
 
     const hoverTargets = document.querySelectorAll(
-      "a, button, .skill-list li, .project-item, .exp-item"
+      "a, button, .skill-list li, .post-item, .run-item, .book-thumb, .book-current, .project-row, .work-item"
     );
     const addExpanded = () => cursor?.classList.add("expanded");
     const removeExpanded = () => cursor?.classList.remove("expanded");
