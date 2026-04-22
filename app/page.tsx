@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import Image from "next/image";
 import PortfolioEffects from "./portfolio-effects";
 import BookShelf from "./book-shelf";
