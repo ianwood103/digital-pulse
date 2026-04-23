@@ -3,9 +3,11 @@ export const revalidate = 3600;
 import Image from "next/image";
 import BookShelf from "./book-shelf";
 import GithubGraph from "./github-graph";
+import RunningSection from "./running-section";
 import { fetchBooks } from "./lib/books";
 import { getAllPosts } from "./lib/posts";
 import { fetchContributionYear } from "./lib/github";
+import { fetchRuns } from "./lib/strava";
 
 const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
@@ -22,17 +24,20 @@ function formatDate(iso: string): string {
 }
 
 export default async function Home() {
-  let booksData: Awaited<ReturnType<typeof fetchBooks>> = {
-    currentlyReading: [],
-    wantToRead: [],
-    readThisYear: [],
-  };
-  try {
-    booksData = await fetchBooks();
-  } catch {}
+  const [booksData, runs] = await Promise.all([
+    fetchBooks().catch(() => ({
+      currentlyReading: [],
+      wantToRead: [],
+      readThisYear: [],
+    })),
+    fetchRuns().catch(() => []),
+  ]);
 
   const posts = getAllPosts();
   const contributionData = await fetchContributionYear("ianwood103");
+  const runMonthLabel = new Date().toLocaleDateString("en-US", {
+    month: "long",
+  });
 
   return (
     <>
@@ -137,10 +142,10 @@ export default async function Home() {
           {/* ── RUNNING ── */}
           <section id="running" className="reveal">
             <div className="section-label">
-              Running <span id="runMonthLabel"></span>
+              Running <span id="runMonthLabel">{`// ${runMonthLabel}`}</span>
             </div>
             <div id="runningContent">
-              <div className="section-msg">Loading runs…</div>
+              <RunningSection runs={runs} />
             </div>
           </section>
 

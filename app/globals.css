@@ -381,6 +381,7 @@ section {
   letter-spacing: -0.02em;
   line-height: 1;
 }
+.run-stat-value-pace { font-size: 18px; }
 
 .run-stat-label {
   font-family: var(--font-mono);
@@ -404,8 +405,17 @@ section {
 }
 .run-item:hover { background: var(--blue-light); margin: 0 -12px; padding: 14px 12px; }
 
+.run-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
 .run-map-svg { width: 56px; flex-shrink: 0; }
 .run-map-svg svg { display: block; }
+
+.run-copy { min-width: 0; }
 
 .run-name {
   font-size: 14px;
@@ -421,7 +431,10 @@ section {
   font-weight: 300;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
+
+.run-heart { color: #ef4444; }
 
 .run-right { text-align: right; }
 
@@ -453,7 +466,9 @@ section {
   border-radius: 4px;
   padding: 20px 24px;
   margin-top: 16px;
+  margin-bottom: 20px;
 }
+.setup-box p + p { margin-top: 8px; }
 .setup-box code {
   font-family: var(--font-mono);
   font-size: 12px;
