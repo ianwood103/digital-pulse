@@ -116,12 +116,17 @@ export default function BookShelf({
   wantToRead,
   readThisYear,
 }: BookShelfProps) {
-  const current = currentlyReading[0];
   const wantToReadCapped = wantToRead.slice(0, 12);
 
   return (
     <div>
-      {current && <CurrentHero book={current} />}
+      {currentlyReading.length > 0 && (
+        <div className="current-books">
+          {currentlyReading.map((book, i) => (
+            <CurrentHero key={book.guid ?? `${book.title}-${i}`} book={book} />
+          ))}
+        </div>
+      )}
 
       {readThisYear.length > 0 && (
         <div style={{ marginBottom: 28 }}>
