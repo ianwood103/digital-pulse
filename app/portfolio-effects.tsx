@@ -1,19 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function PortfolioEffects() {
-  const [isPointerFine, setIsPointerFine] = useState(false);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
-    setIsPointerFine(
-      window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    );
-  }, []);
-
-  useEffect(() => {
-    if (!isPointerFine) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      return;
+    }
 
     const cursor = document.getElementById("cursor");
     const ring = document.getElementById("cursorRing");
@@ -64,7 +58,7 @@ export default function PortfolioEffects() {
         el.removeEventListener("mouseleave", removeExpanded);
       });
     };
-  }, [isPointerFine]);
+  }, []);
 
   useEffect(() => {
     const indicator = document.getElementById("navIndicator");
@@ -148,8 +142,6 @@ export default function PortfolioEffects() {
       sectionObserver.disconnect();
     };
   }, []);
-
-  if (!isPointerFine) return null;
 
   return (
     <>
