@@ -4,11 +4,21 @@ import Image from "next/image";
 import PortfolioEffects from "./portfolio-effects";
 import BookShelf from "./book-shelf";
 import { fetchBooks } from "./lib/books";
+import { getAllPosts } from "./lib/posts";
 
 const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 export default async function Home() {
   let booksData: Awaited<ReturnType<typeof fetchBooks>> = {
@@ -19,6 +29,8 @@ export default async function Home() {
   try {
     booksData = await fetchBooks();
   } catch {}
+
+  const posts = getAllPosts();
 
   return (
     <>
@@ -144,9 +156,26 @@ export default async function Home() {
           {/* ── WRITING ── */}
           <section id="writing" className="reveal">
             <div className="section-label">Writing</div>
-            <div id="writingContent">
-              <div className="section-msg">Loading posts…</div>
-            </div>
+            {posts.length === 0 ? (
+              <p className="empty-post">No posts yet.</p>
+            ) : (
+              <div className="post-list">
+                {posts.map((post) => (
+                  <a
+                    key={post.slug}
+                    href={`/posts/${post.slug}`}
+                    className="post-item"
+                  >
+                    <div className="post-item-meta">
+                      {formatDate(post.date)} · {post.readTime} read
+                    </div>
+                    <div className="post-title">{post.title}</div>
+                    <div className="post-excerpt">{post.excerpt}</div>
+                    <span className="post-arrow">→</span>
+                  </a>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* ── WORK ── */}
