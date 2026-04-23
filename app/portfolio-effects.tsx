@@ -1,38 +1,13 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
-
-const POINTER_FINE_QUERY = "(hover: hover) and (pointer: fine)";
-
-function subscribePointerFine(onChange: () => void) {
-  if (typeof window === "undefined") return () => {};
-
-  const mediaQuery = window.matchMedia(POINTER_FINE_QUERY);
-  mediaQuery.addEventListener("change", onChange);
-
-  return () => mediaQuery.removeEventListener("change", onChange);
-}
-
-function getPointerFineSnapshot() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia(POINTER_FINE_QUERY).matches
-  );
-}
-
-function getServerPointerFineSnapshot() {
-  return false;
-}
+import { useEffect } from "react";
 
 export default function PortfolioEffects() {
-  const isPointerFine = useSyncExternalStore(
-    subscribePointerFine,
-    getPointerFineSnapshot,
-    getServerPointerFineSnapshot
-  );
-
   useEffect(() => {
-    if (!isPointerFine) return;
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      return;
+    }
 
     const cursor = document.getElementById("cursor");
     const ring = document.getElementById("cursorRing");
@@ -83,7 +58,7 @@ export default function PortfolioEffects() {
         el.removeEventListener("mouseleave", removeExpanded);
       });
     };
-  }, [isPointerFine]);
+  }, []);
 
   useEffect(() => {
     const indicator = document.getElementById("navIndicator");
@@ -167,8 +142,6 @@ export default function PortfolioEffects() {
       sectionObserver.disconnect();
     };
   }, []);
-
-  if (!isPointerFine) return null;
 
   return (
     <>
