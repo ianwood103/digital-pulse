@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { marked } from "marked";
 import { getAllPosts, getPostBySlug } from "@/app/lib/posts";
 
@@ -48,12 +49,12 @@ export default async function PostPage({ params }: { params: Params }) {
   const html = await marked(post.content);
 
   return (
-    <div className="layout">
-      <main className="main">
+    <div className="layout post-layout">
+      <main className="main post-main">
         <div className="post-view">
-          <a href="/#writing" className="post-back">
+          <Link href="/#writing" className="post-back">
             Writing
-          </a>
+          </Link>
           <h1 className="post-full-title">{post.title}</h1>
           <div className="post-full-meta">
             <span>{formatDate(post.date)}</span>

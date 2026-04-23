@@ -1,7 +1,6 @@
 export const revalidate = 3600;
 
 import Image from "next/image";
-import PortfolioEffects from "./portfolio-effects";
 import BookShelf from "./book-shelf";
 import { fetchBooks } from "./lib/books";
 import { getAllPosts } from "./lib/posts";
@@ -34,7 +33,6 @@ export default async function Home() {
 
   return (
     <>
-      <PortfolioEffects />
       <div className="layout">
         <aside className="sidebar">
           <div className="sidebar-top">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { EB_Garamond, DM_Mono } from "next/font/google";
+import PortfolioEffects from "./portfolio-effects";
 import "./globals.css";
 
 const ebGaramond = EB_Garamond({
@@ -35,7 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${ebGaramond.variable} ${dmMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <PortfolioEffects />
+        {children}
+      </body>
     </html>
   );
 }
