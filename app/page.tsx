@@ -2,8 +2,10 @@ export const revalidate = 3600;
 
 import Image from "next/image";
 import BookShelf from "./book-shelf";
+import GithubGraph from "./github-graph";
 import { fetchBooks } from "./lib/books";
 import { getAllPosts } from "./lib/posts";
+import { fetchContributionYear } from "./lib/github";
 
 const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
@@ -30,6 +32,7 @@ export default async function Home() {
   } catch {}
 
   const posts = getAllPosts();
+  const contributionData = await fetchContributionYear("ianwood103");
 
   return (
     <>
@@ -425,9 +428,7 @@ export default async function Home() {
             {/* Recent Activity */}
             <div className="work-sub">Recent Activity</div>
 
-            <div id="ghGraph" className="gh-wrap">
-              <div className="section-msg">Loading GitHub activity…</div>
-            </div>
+            <GithubGraph data={contributionData} />
 
             {/* Certifications */}
             <div className="work-sub">Certifications</div>

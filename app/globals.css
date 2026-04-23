@@ -1094,27 +1094,31 @@ section {
 
 /* ── GITHUB GRAPH ── */
 .gh-wrap {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 20px;
-  overflow-x: auto;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  min-width: 0;
 }
 
 .gh-graph {
-  display: flex;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: repeat(var(--gh-columns), minmax(0, 1fr));
+  gap: clamp(1px, 0.35vw, 3px);
+  width: 100%;
+  min-width: 0;
 }
 
 .gh-col {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: clamp(1px, 0.35vw, 3px);
+  min-width: 0;
 }
 
 .gh-cell {
-  width: 11px;
-  height: 11px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 2px;
   background: var(--border);
   transition: opacity 0.15s;
@@ -1130,12 +1134,30 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
   margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.03em;
 }
 
+.gh-link {
+  color: var(--blue);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.gh-link:hover { opacity: 0.7; }
+
 .gh-months {
-  display: flex;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--gh-columns), minmax(0, 1fr));
+  gap: clamp(1px, 0.35vw, 3px);
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 6px;
 }
 
 .gh-month-label {
@@ -1144,7 +1166,8 @@ section {
   color: var(--muted);
   font-weight: 300;
   letter-spacing: 0.06em;
-  min-width: 28px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* ── HEADSHOT ── */
