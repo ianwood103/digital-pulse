@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { ContributionYear, ContributionDay } from "./lib/github";
 
 const MONTH_NAMES = [
@@ -58,21 +59,24 @@ export default function GithubGraph({ data }: { data: ContributionYear }) {
   const columns = buildColumns(days);
   const today = new Date().toISOString().slice(0, 10);
   const monthLabels = buildMonthLabels(columns);
+  const graphStyle = {
+    "--gh-columns": Math.max(columns.length, 1),
+  } as CSSProperties;
 
   return (
     <div className="gh-wrap">
-      <div className="gh-months">
+      <div className="gh-months" style={graphStyle}>
         {monthLabels.map((ml, i) => (
           <div
             key={i}
             className="gh-month-label"
-            style={{ width: `${ml.colSpan * 14}px` }}
+            style={{ gridColumn: `span ${ml.colSpan}` }}
           >
             {ml.label}
           </div>
         ))}
       </div>
-      <div className="gh-graph">
+      <div className="gh-graph" style={graphStyle}>
         {columns.map((col, ci) => (
           <div key={ci} className="gh-col">
             {col.map((day, di) => {
@@ -104,7 +108,9 @@ export default function GithubGraph({ data }: { data: ContributionYear }) {
           {streak > 0 && <>{streak}-day streak · </>}
           <a
             href="https://github.com/ianwood103"
-            style={{ color: "var(--blue)", textDecoration: "none" }}
+            className="gh-link"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             GitHub ↗
           </a>

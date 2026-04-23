@@ -1,16 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+
+const POINTER_FINE_QUERY = "(hover: hover) and (pointer: fine)";
+
+function subscribePointerFine(onChange: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  const mediaQuery = window.matchMedia(POINTER_FINE_QUERY);
+  mediaQuery.addEventListener("change", onChange);
+
+  return () => mediaQuery.removeEventListener("change", onChange);
+}
+
+function getPointerFineSnapshot() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia(POINTER_FINE_QUERY).matches
+  );
+}
+
+function getServerPointerFineSnapshot() {
+  return false;
+}
 
 export default function PortfolioEffects() {
-  const [isPointerFine, setIsPointerFine] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setIsPointerFine(
-      window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    );
-  }, []);
+  const isPointerFine = useSyncExternalStore(
+    subscribePointerFine,
+    getPointerFineSnapshot,
+    getServerPointerFineSnapshot
+  );
 
   useEffect(() => {
     if (!isPointerFine) return;
