@@ -70,8 +70,13 @@ function toBookItem(
 
 async function fetchShelf(url: string): Promise<BookItem[]> {
   try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; ai-portfolio/1.0)" },
+    });
+    if (!res.ok) return [];
+    const xml = await res.text();
     const parser = makeParser();
-    const feed = await parser.parseURL(url);
+    const feed = await parser.parseString(xml);
     return (feed.items ?? []).map((it) => toBookItem(it));
   } catch {
     return [];
