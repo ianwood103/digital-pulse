@@ -3,8 +3,10 @@ export const revalidate = 3600;
 import Image from "next/image";
 import BookShelf from "./book-shelf";
 import GithubGraph from "./github-graph";
+import PulseCard from "./pulse-card";
 import RunningSection from "./running-section";
 import { fetchBooks } from "./lib/books";
+import { formatLongDate } from "./lib/format";
 import { getAllPosts } from "./lib/posts";
 import { fetchContributionYear } from "./lib/github";
 import { fetchRuns } from "./lib/strava";
@@ -13,15 +15,6 @@ const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
 
 export default async function Home() {
   const [booksData, runs] = await Promise.all([
@@ -95,27 +88,9 @@ export default async function Home() {
           {/* ── NOW ── */}
           <section id="now" className="reveal">
             <div className="pulse-grid">
-              <div className="pulse-card" id="pcRun">
-                <div className="pulse-card-label">
-                  <span className="pulse-dot orange" />
-                  Running
-                </div>
-                <div className="pulse-skeleton">loading...</div>
-              </div>
-              <div className="pulse-card" id="pcRead">
-                <div className="pulse-card-label">
-                  <span className="pulse-dot green" />
-                  Reading
-                </div>
-                <div className="pulse-skeleton">loading...</div>
-              </div>
-              <div className="pulse-card" id="pcPost">
-                <div className="pulse-card-label">
-                  <span className="pulse-dot" />
-                  Writing
-                </div>
-                <div className="pulse-skeleton">loading...</div>
-              </div>
+              <PulseCard kind="run" run={runs[0]} />
+              <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
+              <PulseCard kind="post" post={posts[0]} />
             </div>
 
             <div className="now-headline">
@@ -173,7 +148,7 @@ export default async function Home() {
                     className="post-item"
                   >
                     <div className="post-item-meta">
-                      {formatDate(post.date)} · {post.readTime} read
+                      {formatLongDate(post.date)} · {post.readTime} read
                     </div>
                     <div className="post-title">{post.title}</div>
                     <div className="post-excerpt">{post.excerpt}</div>

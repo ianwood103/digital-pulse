@@ -18,3 +18,10 @@ export const secondsToClock = (s: number): string => {
 
 export const formatShortDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+export const formatLongDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
