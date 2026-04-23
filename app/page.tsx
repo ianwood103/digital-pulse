@@ -405,9 +405,8 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Recent Activity */}
-            <div className="work-sub">Recent Activity</div>
-
+            {/* Recent Activity — nested under Projects */}
+            <div className="work-sub-sub">Recent Activity</div>
             <GithubGraph data={contributionData} />
 
             {/* Certifications */}

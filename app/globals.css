@@ -910,6 +910,17 @@ section {
   background: var(--border);
 }
 
+.work-sub-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 28px 0 14px;
+  opacity: 0.75;
+}
+
 /* ── EDUCATION (new) ── */
 .edu-block {
   display: grid;
