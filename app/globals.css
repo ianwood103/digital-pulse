@@ -1396,3 +1396,11 @@ section {
   opacity: 0.4;
   font-size: 12px;
 }
+
+/* ── EXP PARAGRAPH (used within work-desc) ── */
+.exp-paragraph {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #374151;
+  margin: 0 0 12px;
+}
