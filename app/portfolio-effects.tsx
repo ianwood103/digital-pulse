@@ -1,13 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function PortfolioEffects() {
+  const pathname = usePathname();
+  const [isPointerFine, setIsPointerFine] = useState(false);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      return;
-    }
+    const query = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const updatePointer = () => setIsPointerFine(query.matches);
+
+    updatePointer();
+    query.addEventListener("change", updatePointer);
+
+    return () => query.removeEventListener("change", updatePointer);
+  }, []);
+
+  useEffect(() => {
+    if (!isPointerFine) return;
 
     const cursor = document.getElementById("cursor");
     const ring = document.getElementById("cursorRing");
@@ -40,25 +52,38 @@ export default function PortfolioEffects() {
     document.addEventListener("mousemove", onMove);
     rafId = requestAnimationFrame(animateRing);
 
-    const hoverTargets = document.querySelectorAll(
-      "a, button, .skill-list li, .post-item, .run-item, .book-thumb, .book-current, .project-row, .work-item"
-    );
+    const hoverTargetSelector =
+      "a, button, [role='button'], .skill-list li, .post-item, .run-item, .book-thumb, .book-current, .project-row, .work-item";
     const addExpanded = () => cursor?.classList.add("expanded");
     const removeExpanded = () => cursor?.classList.remove("expanded");
-    hoverTargets.forEach((el) => {
-      el.addEventListener("mouseenter", addExpanded);
-      el.addEventListener("mouseleave", removeExpanded);
-    });
+
+    const onPointerOver = (e: PointerEvent) => {
+      if (!(e.target instanceof Element)) return;
+      if (e.target.closest(hoverTargetSelector)) addExpanded();
+    };
+
+    const onPointerOut = (e: PointerEvent) => {
+      if (!(e.target instanceof Element)) return;
+      const target = e.target.closest(hoverTargetSelector);
+      if (!target) return;
+      if (e.relatedTarget instanceof Node && target.contains(e.relatedTarget)) {
+        return;
+      }
+      removeExpanded();
+    };
+
+    document.addEventListener("pointerover", onPointerOver);
+    document.addEventListener("pointerout", onPointerOut);
+    window.addEventListener("blur", removeExpanded);
 
     return () => {
       cancelAnimationFrame(rafId);
       document.removeEventListener("mousemove", onMove);
-      hoverTargets.forEach((el) => {
-        el.removeEventListener("mouseenter", addExpanded);
-        el.removeEventListener("mouseleave", removeExpanded);
-      });
+      document.removeEventListener("pointerover", onPointerOver);
+      document.removeEventListener("pointerout", onPointerOut);
+      window.removeEventListener("blur", removeExpanded);
     };
-  }, []);
+  }, [isPointerFine]);
 
   useEffect(() => {
     const indicator = document.getElementById("navIndicator");
@@ -141,7 +166,7 @@ export default function PortfolioEffects() {
       revealObserver.disconnect();
       sectionObserver.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <>

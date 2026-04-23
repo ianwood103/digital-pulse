@@ -656,10 +656,22 @@ section {
   padding: 24px 0;
 }
 
+.post-layout {
+  display: block;
+  min-height: 100vh;
+}
+
+.post-main {
+  width: 100%;
+  max-width: none;
+  padding: 72px clamp(24px, 8vw, 96px) 120px;
+}
+
 .post-view {
-  max-width: 640px;
+  width: 100%;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 40px 0 80px;
+  padding: 0 0 80px;
 }
 
 .post-back {
@@ -673,7 +685,106 @@ section {
   margin-bottom: 32px;
   letter-spacing: 0.04em;
 }
+.post-back::before { content: '←'; }
 .post-back:hover { text-decoration: underline; }
+
+.post-full-title {
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin-bottom: 18px;
+  text-wrap: pretty;
+}
+
+.post-full-meta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  margin-bottom: 40px;
+}
+
+.post-content {
+  font-size: 19px;
+  line-height: 1.78;
+  max-width: none;
+  font-family: var(--font-serif);
+  color: #273244;
+}
+
+.post-content h2 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 2em 0 0.6em;
+}
+
+.post-content h3 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 1.8em 0 0.5em;
+}
+
+.post-content p { margin-bottom: 1.2em; }
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 1.2em 1.4em;
+}
+
+.post-content li { margin-bottom: 0.4em; }
+
+.post-content blockquote {
+  border-left: 2px solid var(--blue-mid);
+  padding-left: 1.2em;
+  margin: 1.4em 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--blue-light);
+  border: 1px solid var(--blue-mid);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.post-content pre {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 1.4em 0;
+}
+
+.post-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.post-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+.post-content a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.post-content a:hover { opacity: 0.75; }
 
 /* ── WORK ── */
 .work-item {
@@ -1118,6 +1229,10 @@ section {
   .pulse-grid { grid-template-columns: 1fr; }
   .now-headline { font-size: 36px; }
   .now-bio { max-width: 100%; }
+  .post-main { padding: 48px 24px 80px; }
+  .post-view { max-width: 680px; }
+  .post-full-title { font-size: 42px; }
+  .post-content { font-size: 18px; }
   .cursor,
   .cursor-ring { display: none !important; }
 }
@@ -1126,6 +1241,14 @@ section {
   .now-headline { font-size: 30px; word-break: break-word; }
   .sidebar { padding: 24px 20px; }
   .main { padding: 32px 20px 64px; }
+  .post-main { padding: 36px 20px 64px; }
+  .post-full-title { font-size: 34px; }
+  .post-full-meta {
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+  .post-content { font-size: 17px; }
   .credential-pills,
   .work-tags,
   .skill-list { max-width: 100%; }
