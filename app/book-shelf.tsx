@@ -1,3 +1,5 @@
+"use client";
+
 interface BookItem {
   title: string;
   author_name?: string;
