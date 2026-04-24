@@ -184,31 +184,14 @@ export default async function Home() {
                   Software Engineer — Factory Software
                 </div>
                 <div className="work-desc">
-                  <ul className="exp-bullets">
-                    <li>
-                      Deploy full-stack features in Agile 2-week sprints for an
-                      internal factory tool tracking equipment maintenance data
-                      used by 50,000+ people.
-                    </li>
-                    <li>
-                      Build and maintain high-performance Go microservices using
-                      Docker and Kubernetes, with MySQL query optimization across
-                      millions of maintenance orders at 6 global factories.
-                    </li>
-                    <li>
-                      Improve system reliability via Splunk, Grafana, and
-                      database profiling; led database partitioning initiative
-                      for scalability.
-                    </li>
-                    <li>
-                      Manage Kafka infrastructure including topic creation,
-                      certificate handling, and messaging reliability.
-                    </li>
-                    <li>
-                      Leverage multi-agent coding systems to automate and
-                      accelerate development processes.
-                    </li>
-                  </ul>
+                  <p className="exp-paragraph">
+                    Building the internal tools that help Tesla maintain
+                    equipment across six global factories — full-stack, at
+                    scale. I work across Go microservices, MySQL, Kubernetes,
+                    and Kafka day-to-day, with a focus on reliability and
+                    performance at millions of records. Increasingly, I lean on
+                    AI to accelerate how I build.
+                  </p>
                 </div>
                 <div className="work-tags">
                   <span className="tag">Go</span>
@@ -234,20 +217,12 @@ export default async function Home() {
                 <div className="work-company">Tesla</div>
                 <div className="work-role">Software Engineer Intern</div>
                 <div className="work-desc">
-                  <ul className="exp-bullets">
-                    <li>
-                      Developed features for in-house equipment maintenance
-                      software using Go, MySQL, and Angular.
-                    </li>
-                    <li>
-                      Built Grafana dashboards for data analytics and equipment
-                      failure prediction via a Kafka data pipeline.
-                    </li>
-                    <li>
-                      Led design and implementation of an API for forms and
-                      workflows used across the company by 20,000+ people.
-                    </li>
-                  </ul>
+                  <p className="exp-paragraph">
+                    My first exposure to Tesla&apos;s scale — built features
+                    for the same factory tool I now own full-time, plus an API
+                    for forms and workflows used by 20,000+ people across the
+                    company.
+                  </p>
                 </div>
                 <div className="work-tags">
                   <span className="tag">Go</span>
@@ -271,20 +246,11 @@ export default async function Home() {
                 <div className="work-company">FlightBridge</div>
                 <div className="work-role">Software Engineer Intern</div>
                 <div className="work-desc">
-                  <ul className="exp-bullets">
-                    <li>
-                      Developed an online booking and management platform for
-                      the private aviation industry.
-                    </li>
-                    <li>
-                      Built a hotel visualization tool using ASP.NET and the
-                      Google Maps API for 1,000+ customers.
-                    </li>
-                    <li>
-                      Used SQL and LINQ in C# to build a hotel recommendation
-                      engine that increased search efficiency.
-                    </li>
-                  </ul>
+                  <p className="exp-paragraph">
+                    Built booking and hotel tools for private aviation — a
+                    maps-based hotel visualization and a C# recommendation
+                    engine that improved search relevance for 1,000+ customers.
+                  </p>
                 </div>
                 <div className="work-tags">
                   <span className="tag">ASP.NET</span>
@@ -307,13 +273,10 @@ export default async function Home() {
                 <div className="work-company">Griffin Solutions Group</div>
                 <div className="work-role">Software Engineer Intern</div>
                 <div className="work-desc">
-                  <ul className="exp-bullets">
-                    <li>
-                      Developed frontend features in React and built API
-                      endpoints with Node.js and PostgreSQL in an Agile
-                      development cycle.
-                    </li>
-                  </ul>
+                  <p className="exp-paragraph">
+                    First real SWE internship — React frontend and Node.js
+                    APIs. Where I fell in love with full-stack.
+                  </p>
                 </div>
                 <div className="work-tags">
                   <span className="tag">React</span>
