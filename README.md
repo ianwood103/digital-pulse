@@ -1,8 +1,8 @@
-# Ian Wood Portfolio
+# digital pulse
 
-Personal website built with Next.js 16, React 19, and Tailwind CSS 4. The site is designed as a living snapshot of what Ian Wood is doing now, with sections for running, reading, writing, work history, and GitHub activity.
+`digital pulse` is Ian Wood's personal internet project built with Next.js 16, React 19, and Tailwind CSS 4. It includes portfolio material, but it is broader than a resume site: a living snapshot of what he is doing now across running, reading, writing, work, and GitHub activity.
 
-Unlike a static portfolio, this app blends authored content with live data:
+Rather than acting like a static portfolio, the app blends authored content with live data:
 
 - recent runs from Strava
 - book shelves from Goodreads RSS
@@ -146,4 +146,4 @@ To obtain Strava credentials:
 
 - Strava responses are cached and revalidated periodically.
 - Goodreads and GitHub data are public-source reads and require no local secrets.
-- The README previously reflected the default Next.js starter; it now documents the actual portfolio application.
+- The README previously reflected the default Next.js starter; it now documents `digital pulse` as the actual application.
