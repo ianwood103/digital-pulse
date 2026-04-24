@@ -336,7 +336,9 @@ export default async function Home() {
                 <div className="project-row-name">
                   More projects in progress
                 </div>
-                <div className="project-row-stack">// currently building</div>
+                <div className="project-row-stack">
+                  {"// currently building"}
+                </div>
                 <div className="project-row-desc">
                   A handful of side builds I&apos;m actively shipping —
                   experiments, weekend projects, and things still too rough
