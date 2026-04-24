@@ -24,9 +24,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Ian Wood — Software Engineer",
+  title: "Ian Wood",
   description:
-    "Product-minded full-stack engineer. Currently at Tesla, building factory software used by 50,000+ people.",
+    "A living snapshot of Ian Wood's work, writing, reading, running, and current projects.",
 };
 
 export default function RootLayout({
