@@ -96,15 +96,16 @@ export default async function Home() {
             <div className="now-headline">
               Engineer. Reader.
               <br />
-              <em>Occasional cook.</em>
+              <em>Builder.</em>
             </div>
 
             <p className="now-bio">
-              I build software end-to-end — from pixel-level UI to system
-              architecture — with a focus on shipping things that matter to the
-              business. Currently at Tesla building factory infrastructure used
-              by 50,000+ people. AI-native by instinct: I reach for agents and
-              automation before boilerplate.
+              I&apos;m a software engineer at Tesla in Austin. I read a lot —
+              philosophy mostly, Stoics in particular. I follow baseball with
+              an investment that probably isn&apos;t warranted. I cook. I build
+              side projects. I&apos;m the kind of person who goes unreasonably
+              deep on things, and the things change often. This site is a
+              window into what&apos;s currently in rotation.
             </p>
 
             <div className="credential-pills">
