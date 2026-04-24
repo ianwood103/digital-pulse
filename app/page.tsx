@@ -315,24 +315,6 @@ export default async function Home() {
 
             <div className="project-list">
               <div className="project-row">
-                <div className="project-row-name">Multi-Agent Coding System</div>
-                <div className="project-row-stack">Claude Code · GitHub Actions · Vercel</div>
-                <div className="project-row-desc">
-                  Automated PR workflow powered by Claude Code agents. Issues
-                  become branches, code reviews, and deployments — triggered
-                  from a phone.
-                </div>
-                <a
-                  href={GITHUB}
-                  className="project-row-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub ↗
-                </a>
-              </div>
-
-              <div className="project-row">
                 <div className="project-row-name">ianwood.dev</div>
                 <div className="project-row-stack">Next.js · TypeScript · Vercel</div>
                 <div className="project-row-desc">
@@ -350,22 +332,21 @@ export default async function Home() {
                 </a>
               </div>
 
-              <div className="project-row">
-                <div className="project-row-name">Magnidia</div>
-                <div className="project-row-stack">Next.js · TypeScript · PostgreSQL</div>
-                <div className="project-row-desc">
-                  Led a 6-person team as project manager to build a web app
-                  for creating and sharing events. Built with TypeScript,
-                  Next.js, Tailwind, NextAuth, Google Cloud, Prisma, and AWS.
+              <div className="project-row project-row--wip">
+                <div className="project-row-name">
+                  More projects in progress
                 </div>
-                <a
-                  href="https://magnidia.com"
-                  className="project-row-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Live ↗
-                </a>
+                <div className="project-row-stack">// currently building</div>
+                <div className="project-row-desc">
+                  A handful of side builds I&apos;m actively shipping —
+                  experiments, weekend projects, and things still too rough
+                  to link. More soon.
+                </div>
+                <div className="project-row-loader" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
               </div>
             </div>
 
