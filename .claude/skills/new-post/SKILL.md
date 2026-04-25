@@ -75,11 +75,19 @@ First paragraph (becomes the excerpt automatically).
 Rest of the body...
 ```
 
-Frontmatter is **only** needed when overriding a default. The most common reason to add it is backdating a post:
+**Light editing pass.** Before writing, do two small touch-ups on the user's prose — nothing that changes their voice:
+
+- **Excerpt.** The homepage shows the first paragraph as the card summary. If the user's first paragraph is more than ~40 words, write a 1–2 sentence abstract (≤40 words) and put it in frontmatter as `excerpt:`. Pull the framing directly from the post; don't editorialize. Leave the body untouched.
+- **Headings.** If the post is a single wall of text (one giant paragraph, or two+ paragraphs with no structure), insert 1–3 H2 (`##`) section headings at natural topic breaks. Don't invent content, don't reorder, don't rewrite — just label sections that already exist. If the prose already has structure, skip this.
+
+Both touch-ups are optional. Short, well-formed posts need neither. When in doubt, leave it alone.
+
+Other frontmatter is **only** needed when overriding a default. The most common reason is backdating:
 
 ```md
 ---
 date: 2026-04-15
+excerpt: One- or two-sentence abstract.
 ---
 
 # Post Title
@@ -87,7 +95,7 @@ date: 2026-04-15
 Body...
 ```
 
-Don't add `slug`, `title`, `readTime`, or `excerpt` to frontmatter unless the user explicitly wants to override them. Cluttering the frontmatter defeats the point of the streamlined loader.
+Don't add `slug`, `title`, or `readTime` to frontmatter unless the user explicitly wants to override them.
 
 If the user's prose is straight markdown (headings, lists, links, code fences), preserve it. The page renderer uses `marked` with GFM enabled, so standard GitHub-flavored markdown works.
 
