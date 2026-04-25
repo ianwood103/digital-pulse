@@ -105,18 +105,39 @@ docs/mockup.html        Design/reference mockup
 
 ## Writing a New Post
 
-Add a Markdown file under `content/posts/` with frontmatter like:
+Drop a Markdown file into `content/posts/`. The filename (minus `.md`) becomes the slug and URL: `content/posts/my-post.md` → `/posts/my-post`.
+
+The minimum viable post is just a heading and some prose:
+
+```md
+# My Post Title
+
+First paragraph here — this becomes the excerpt automatically.
+
+Rest of the post...
+```
+
+Everything is derived from the file:
+
+- **slug** — filename
+- **title** — first `# heading` (stripped from the rendered body), or a title-cased filename
+- **excerpt** — first paragraph, with markdown stripped
+- **readTime** — computed from word count (~220 wpm)
+- **date** — today, unless overridden
+
+Any of these can be overridden via YAML frontmatter when you want explicit control. `date` is the one you'll typically want to set so posts don't all stack on "today":
 
 ```md
 ---
-title: Example Post
 date: 2026-04-23
-readTime: 4 min
-excerpt: Short summary shown on the homepage.
 ---
+
+# My Post Title
+
+Body...
 ```
 
-The post list on the homepage will pick it up automatically.
+Frontmatter fields are all optional: `title`, `date`, `readTime`, `excerpt`. The post list on the homepage picks up new files automatically and sorts newest-first.
 
 ## Strava Setup
 
