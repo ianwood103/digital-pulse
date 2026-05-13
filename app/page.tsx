@@ -5,6 +5,7 @@ import BookShelf from "./book-shelf";
 import GithubGraph from "./github-graph";
 import PulseCard from "./pulse-card";
 import RunningSection from "./running-section";
+import SidebarShell from "./sidebar-shell";
 import { fetchBooks } from "./lib/books";
 import { formatLongDate } from "./lib/format";
 import { getAllPosts } from "./lib/posts";
@@ -35,7 +36,7 @@ export default async function Home() {
   return (
     <>
       <div className="layout">
-        <aside className="sidebar">
+        <SidebarShell>
           <div className="sidebar-top">
             <div className="headshot-wrap">
               <Image
@@ -82,7 +83,7 @@ export default async function Home() {
             </div>
             <div className="location">Austin, TX</div>
           </div>
-        </aside>
+        </SidebarShell>
 
         <main className="main">
           {/* ── NOW ── */}
