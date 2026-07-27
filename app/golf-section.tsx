@@ -40,17 +40,25 @@ export default function GolfSection({ rounds }: { rounds: GolfRound[] }) {
             </div>
 
             {round.photos.length > 0 && (
-              <div
-                className="golf-photos"
-                data-count={Math.min(round.photos.length, 3)}
-              >
+              <div className="golf-photos">
                 {round.photos.map((photo) => (
-                  <figure className="golf-photo" key={photo.id}>
+                  <figure
+                    className="golf-photo"
+                    key={photo.id}
+                    // These are generated scorecards, so the frame has to match
+                    // the photo rather than the other way round — anything
+                    // cropped is a number you can no longer read.
+                    style={
+                      photo.width && photo.height
+                        ? { aspectRatio: `${photo.width} / ${photo.height}` }
+                        : undefined
+                    }
+                  >
                     <Image
                       src={photo.url}
                       alt={photo.caption || `Photo from ${round.location}`}
                       fill
-                      sizes="(max-width: 900px) 100vw, 340px"
+                      sizes="(max-width: 900px) 45vw, 240px"
                       className="golf-photo-img"
                       // Strava already serves these from its CDN at the width
                       // we ask for, so routing them back through the image

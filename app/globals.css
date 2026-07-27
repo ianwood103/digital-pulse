@@ -460,26 +460,23 @@ section {
 
 .golf-photos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 10px;
 }
-.golf-photos[data-count='1'] { grid-template-columns: minmax(0, 420px); }
-.golf-photos[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
 
+/* Falls back to portrait — these photos are always scorecards. The real
+   ratio is set per photo inline once Strava reports the dimensions. */
 .golf-photo {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 3px;
   border: 1px solid var(--border);
-  background: var(--blue-light);
+  background: var(--card-bg);
 }
 
-.golf-photo-img {
-  object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.golf-photo:hover .golf-photo-img { transform: scale(1.04); }
+.golf-photo-img { object-fit: contain; }
 
 .section-msg {
   font-family: var(--font-mono);
@@ -1404,9 +1401,7 @@ section {
   .project-row-loader { grid-column: 1; grid-row: auto; align-self: start; }
   .skills-grid { grid-template-columns: 1fr; }
   .pulse-grid { grid-template-columns: 1fr; }
-  .golf-photos,
-  .golf-photos[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
-  .golf-photos[data-count='1'] { grid-template-columns: 1fr; }
+  .golf-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .now-headline { font-size: 36px; }
   .now-bio { max-width: 100%; }
   .post-main { padding: 48px 24px 80px; }
