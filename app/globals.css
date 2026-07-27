@@ -252,7 +252,7 @@ section {
 /* ── PULSE CARDS ── */
 .pulse-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 0;
 }
@@ -1402,7 +1402,7 @@ section {
   .project-row-link { grid-column: 1; grid-row: auto; }
   .project-row-loader { grid-column: 1; grid-row: auto; align-self: start; }
   .skills-grid { grid-template-columns: 1fr; }
-  .pulse-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pulse-grid { grid-template-columns: 1fr; }
   .golf-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .now-headline { font-size: 36px; }
   .now-bio { max-width: 100%; }
