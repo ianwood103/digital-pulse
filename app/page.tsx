@@ -17,6 +17,11 @@ const PHONE = "770-656-1244";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 
+// Toggle to bring the Writing section back on the frontend — the
+// underlying pipeline (app/lib/posts.ts, app/posts/[slug], content/posts/*)
+// is untouched, this just stops it from rendering.
+const WRITING_ENABLED = false;
+
 export default async function Home() {
   const [booksData, runs] = await Promise.all([
     fetchBooks().catch(() => ({
@@ -62,9 +67,11 @@ export default async function Home() {
               <a href="#reading" data-section="reading">
                 Reading
               </a>
-              <a href="#writing" data-section="writing">
-                Writing
-              </a>
+              {WRITING_ENABLED && (
+                <a href="#writing" data-section="writing">
+                  Writing
+                </a>
+              )}
               <a href="#work" data-section="work">
                 Work
               </a>
@@ -91,7 +98,7 @@ export default async function Home() {
             <div className="pulse-grid">
               <PulseCard kind="run" run={runs[0]} />
               <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
-              <PulseCard kind="post" post={posts[0]} />
+              {WRITING_ENABLED && <PulseCard kind="post" post={posts[0]} />}
             </div>
 
             <div className="now-headline">
@@ -137,29 +144,31 @@ export default async function Home() {
           </section>
 
           {/* ── WRITING ── */}
-          <section id="writing" className="reveal">
-            <div className="section-label">Writing</div>
-            {posts.length === 0 ? (
-              <p className="empty-post">No posts yet.</p>
-            ) : (
-              <div className="post-list">
-                {posts.map((post) => (
-                  <a
-                    key={post.slug}
-                    href={`/posts/${post.slug}`}
-                    className="post-item"
-                  >
-                    <div className="post-item-meta">
-                      {formatLongDate(post.date)} · {post.readTime} read
-                    </div>
-                    <div className="post-title">{post.title}</div>
-                    <div className="post-excerpt">{post.excerpt}</div>
-                    <span className="post-arrow">→</span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </section>
+          {WRITING_ENABLED && (
+            <section id="writing" className="reveal">
+              <div className="section-label">Writing</div>
+              {posts.length === 0 ? (
+                <p className="empty-post">No posts yet.</p>
+              ) : (
+                <div className="post-list">
+                  {posts.map((post) => (
+                    <a
+                      key={post.slug}
+                      href={`/posts/${post.slug}`}
+                      className="post-item"
+                    >
+                      <div className="post-item-meta">
+                        {formatLongDate(post.date)} · {post.readTime} read
+                      </div>
+                      <div className="post-title">{post.title}</div>
+                      <div className="post-excerpt">{post.excerpt}</div>
+                      <span className="post-arrow">→</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
 
           {/* ── WORK ── */}
           <section id="work" className="reveal">
