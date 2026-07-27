@@ -52,6 +52,11 @@ export default function GolfSection({ rounds }: { rounds: GolfRound[] }) {
                       fill
                       sizes="(max-width: 900px) 100vw, 340px"
                       className="golf-photo-img"
+                      // Strava already serves these from its CDN at the width
+                      // we ask for, so routing them back through the image
+                      // optimizer buys nothing — and doing so means every CDN
+                      // hostname Strava uses has to be allowlisted up front.
+                      unoptimized
                     />
                   </figure>
                 ))}

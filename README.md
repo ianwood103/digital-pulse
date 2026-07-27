@@ -69,7 +69,7 @@ A single page of recent activities is fetched from the Strava API and shared by 
 - **Running** filters the page to runs and calculates monthly summary stats.
 - **Golf** filters to `Golf` activities and, for each one, fetches the photos attached to that activity. The activity title is used as the course name, since rounds are always titled with where they were played. If the photo endpoint is unavailable, the section falls back to the primary photo on the activity summary.
 
-Photos are served from Strava's CloudFront CDN, which is allowlisted for `next/image` in `next.config.ts`.
+Photos are rendered straight from Strava's CDN at the size Strava serves them, so they bypass the Next.js image optimizer.
 
 ### Goodreads
 
