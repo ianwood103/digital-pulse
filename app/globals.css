@@ -297,6 +297,7 @@ section {
 .pulse-dot.orange { background: #f97316; }
 .pulse-dot.green { background: #22c55e; }
 .pulse-dot.grass { background: #15803d; }
+.pulse-dot.film { background: #7c3aed; }
 
 @keyframes pdot {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -1527,6 +1528,120 @@ section {
 @media (max-width: 900px) {
   .book-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
   #reading .book-row .book-card { width: 120px; }
+}
+
+/* ── MOVIES (Letterboxd diary) ── */
+.current-films { margin-bottom: 28px; }
+
+.film-current {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.film-current:hover {
+  border-color: var(--blue-mid);
+  box-shadow: 0 2px 12px rgba(26, 86, 219, 0.06);
+}
+
+.film-poster {
+  width: 72px;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.film-no-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: var(--blue-light);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+  padding: 8px;
+}
+.film-current .film-no-poster { width: 72px; }
+
+.film-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.film-year {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-left: 8px;
+}
+
+.film-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 4px;
+}
+
+.films-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 14px;
+}
+
+.film-thumb {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.film-thumb img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+  transition: transform 0.2s;
+}
+.film-thumb:hover img { transform: translateY(-2px); }
+
+.film-thumb-title {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.film-thumb-year {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .films-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
 }
 
 /* ── EXP BULLETS (used within work-desc) ── */
