@@ -4,7 +4,7 @@
 
 Rather than acting like a static portfolio, the app blends authored content with live data:
 
-- recent runs from Strava
+- recent runs and golf rounds from Strava
 - book shelves from Goodreads RSS
 - writing pulled from local Markdown files
 - GitHub contribution activity from a public contributions API
@@ -13,6 +13,7 @@ Rather than acting like a static portfolio, the app blends authored content with
 
 - **Now**: a top-level summary with pulse cards for the latest run, current book, and newest post
 - **Running**: recent run history plus monthly rollups for mileage, pace, and time on feet
+- **Golf**: recent rounds with the course played and the photos attached to each Strava activity
 - **Reading**: currently reading, to-read, and books finished in 2026
 - **Writing**: posts sourced from `content/posts/*.md`
 - **Work**: experience timeline and background
@@ -63,7 +64,12 @@ If these values are missing, the running section stays visible but renders a not
 
 ### Strava
 
-The running section fetches recent activities from the Strava API, filters to runs, and calculates monthly summary stats.
+A single page of recent activities is fetched from the Strava API and shared by both sections:
+
+- **Running** filters the page to runs and calculates monthly summary stats.
+- **Golf** filters to `Golf` activities and, for each one, fetches the photos attached to that activity. The activity title is used as the course name, since rounds are always titled with where they were played. If the photo endpoint is unavailable, the section falls back to the primary photo on the activity summary.
+
+Photos are served from Strava's CloudFront CDN, which is allowlisted for `next/image` in `next.config.ts`.
 
 ### Goodreads
 
@@ -89,6 +95,7 @@ Contribution data is fetched from `https://github-contributions-api.jogruber.de`
 app/
   page.tsx              Main homepage composition
   running-section.tsx   Running dashboard UI
+  golf-section.tsx      Golf rounds and activity photos
   book-shelf.tsx        Reading UI
   github-graph.tsx      GitHub contribution graph
   pulse-card.tsx        Summary cards in the hero section
@@ -96,7 +103,7 @@ app/
     books.ts            Goodreads ingestion
     posts.ts            Markdown post loading
     github.ts           GitHub contribution fetcher
-    strava.ts           Strava auth, fetch, and run stats
+    strava.ts           Strava auth, fetch, run stats, and golf rounds
 
 content/posts/          Markdown writing archive
 public/                 Static images

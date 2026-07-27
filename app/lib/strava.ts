@@ -9,6 +9,25 @@ export interface Run {
   summaryPolyline?: string;
 }
 
+export interface GolfPhoto {
+  id: string;
+  url: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+}
+
+export interface GolfRound {
+  id: number;
+  /** The activity title, which is always the course the round was played at. */
+  location: string;
+  startDateLocal: string;
+  movingTimeSeconds: number;
+  elapsedTimeSeconds: number;
+  distanceMeters: number;
+  photos: GolfPhoto[];
+}
+
 export interface MonthStats {
   count: number;
   miles: number;
@@ -77,6 +96,10 @@ async function getAccessToken(): Promise<string | null> {
 
 type StravaActivity = Record<string, unknown> & {
   map?: { summary_polyline?: string };
+  photos?: {
+    primary?: { unique_id?: string; urls?: Record<string, string> } | null;
+    count?: number;
+  };
 };
 
 function normalize(activity: StravaActivity): Run {
@@ -92,34 +115,156 @@ function normalize(activity: StravaActivity): Run {
   };
 }
 
+// One page of activities backs every section that reads from Strava. Golf
+// rounds are sparse compared to runs, so the page has to be wide enough that a
+// few of them survive filtering. Identical requests are deduped by the fetch
+// cache, so the extra callers cost nothing.
+const ACTIVITY_PAGE_SIZE = 100;
+
+async function fetchRecentActivities(): Promise<StravaActivity[]> {
+  const accessToken = await getAccessToken();
+  if (!accessToken) return [];
+
+  const res = await fetch(
+    `https://www.strava.com/api/v3/athlete/activities?per_page=${ACTIVITY_PAGE_SIZE}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      next: { revalidate: 900 },
+    }
+  );
+
+  if (!res.ok) {
+    console.warn(
+      `Strava activities fetch failed: ${res.status} ${res.statusText}`
+    );
+    return [];
+  }
+
+  return (await res.json()) as StravaActivity[];
+}
+
+function isSport(activity: StravaActivity, sport: string): boolean {
+  return activity.sport_type === sport || activity.type === sport;
+}
+
 export async function fetchRuns(limit = 10): Promise<Run[]> {
   try {
-    const accessToken = await getAccessToken();
-    if (!accessToken) return [];
-
-    const res = await fetch(
-      `https://www.strava.com/api/v3/athlete/activities?per_page=${limit}`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        next: { revalidate: 900 },
-      }
-    );
-
-    if (!res.ok) {
-      console.warn(
-        `Strava activities fetch failed: ${res.status} ${res.statusText}`
-      );
-      return [];
-    }
-
-    const activities = (await res.json()) as StravaActivity[];
+    const activities = await fetchRecentActivities();
     return activities
-      .filter((a) => a.type === "Run" || a.sport_type === "Run")
+      .filter((a) => isSport(a, "Run"))
       .slice(0, limit)
       .map(normalize);
   } catch (err) {
     console.warn(
       `Strava fetchRuns error: ${err instanceof Error ? err.message : String(err)}`
+    );
+    return [];
+  }
+}
+
+// Strava serves photos at a handful of fixed widths; ask for one large enough
+// to survive the image optimizer resizing it back down.
+const PHOTO_SIZE = 1024;
+
+type StravaPhoto = {
+  unique_id?: string;
+  caption?: string;
+  urls?: Record<string, string>;
+  sizes?: Record<string, [number, number]>;
+};
+
+function toGolfPhoto(photo: StravaPhoto, index: number): GolfPhoto | null {
+  const urls = photo.urls ?? {};
+  // Keys are pixel widths as strings ("600", "1024"); take the largest served.
+  const widest = Object.keys(urls)
+    .map(Number)
+    .filter((n) => Number.isFinite(n))
+    .sort((a, b) => b - a)[0];
+
+  const key = widest === undefined ? Object.keys(urls)[0] : String(widest);
+  const url = key ? urls[key] : undefined;
+  if (!url) return null;
+
+  const dimensions = key ? photo.sizes?.[key] : undefined;
+
+  return {
+    id: photo.unique_id || `${index}-${url}`,
+    url,
+    width: dimensions?.[0],
+    height: dimensions?.[1],
+    caption: photo.caption || undefined,
+  };
+}
+
+/**
+ * The summary activity only ever carries the primary photo — used as a fallback
+ * when the per-activity photo endpoint is unavailable.
+ */
+function primaryPhoto(activity: StravaActivity): GolfPhoto[] {
+  const primary = activity.photos?.primary;
+  if (!primary) return [];
+  const photo = toGolfPhoto(
+    { unique_id: primary.unique_id, urls: primary.urls },
+    0
+  );
+  return photo ? [photo] : [];
+}
+
+async function fetchActivityPhotos(
+  activity: StravaActivity
+): Promise<GolfPhoto[]> {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) return primaryPhoto(activity);
+
+    const res = await fetch(
+      `https://www.strava.com/api/v3/activities/${activity.id}/photos?size=${PHOTO_SIZE}&photo_sources=true`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (!res.ok) {
+      console.warn(
+        `Strava photos fetch failed for activity ${activity.id}: ${res.status} ${res.statusText}`
+      );
+      return primaryPhoto(activity);
+    }
+
+    const photos = (await res.json()) as StravaPhoto[];
+    const mapped = photos
+      .map(toGolfPhoto)
+      .filter((p): p is GolfPhoto => p !== null);
+
+    return mapped.length > 0 ? mapped : primaryPhoto(activity);
+  } catch (err) {
+    console.warn(
+      `Strava photos error for activity ${activity.id}: ${err instanceof Error ? err.message : String(err)}`
+    );
+    return primaryPhoto(activity);
+  }
+}
+
+export async function fetchGolfRounds(limit = 6): Promise<GolfRound[]> {
+  try {
+    const activities = await fetchRecentActivities();
+    const rounds = activities.filter((a) => isSport(a, "Golf")).slice(0, limit);
+
+    return await Promise.all(
+      rounds.map(async (activity) => ({
+        id: activity.id as number,
+        location: (activity.name as string) || "Untitled round",
+        startDateLocal: activity.start_date_local as string,
+        movingTimeSeconds: (activity.moving_time as number) ?? 0,
+        elapsedTimeSeconds: (activity.elapsed_time as number) ?? 0,
+        distanceMeters: (activity.distance as number) ?? 0,
+        photos: await fetchActivityPhotos(activity),
+      }))
+    );
+  } catch (err) {
+    console.warn(
+      `Strava fetchGolfRounds error: ${err instanceof Error ? err.message : String(err)}`
     );
     return [];
   }

@@ -3,6 +3,7 @@ export const revalidate = 3600;
 import Image from "next/image";
 import BookShelf from "./book-shelf";
 import GithubGraph from "./github-graph";
+import GolfSection from "./golf-section";
 import PulseCard from "./pulse-card";
 import RunningSection from "./running-section";
 import SidebarShell from "./sidebar-shell";
@@ -10,7 +11,7 @@ import { fetchBooks } from "./lib/books";
 import { formatLongDate } from "./lib/format";
 import { getAllPosts } from "./lib/posts";
 import { fetchContributionYear } from "./lib/github";
-import { fetchRuns } from "./lib/strava";
+import { fetchGolfRounds, fetchRuns } from "./lib/strava";
 
 const EMAIL = "ian.albert.wood@gmail.com";
 const PHONE = "770-656-1244";
@@ -18,13 +19,14 @@ const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 
 export default async function Home() {
-  const [booksData, runs] = await Promise.all([
+  const [booksData, runs, golfRounds] = await Promise.all([
     fetchBooks().catch(() => ({
       currentlyReading: [],
       wantToRead: [],
       readThisYear: [],
     })),
     fetchRuns().catch(() => []),
+    fetchGolfRounds().catch(() => []),
   ]);
 
   const posts = getAllPosts();
@@ -58,6 +60,9 @@ export default async function Home() {
               </a>
               <a href="#running" data-section="running">
                 Running
+              </a>
+              <a href="#golf" data-section="golf">
+                Golf
               </a>
               <a href="#reading" data-section="reading">
                 Reading
@@ -124,6 +129,19 @@ export default async function Home() {
             <div id="runningContent">
               <RunningSection runs={runs} />
             </div>
+          </section>
+
+          {/* ── GOLF ── */}
+          <section id="golf" className="reveal">
+            <div className="section-label">
+              Golf
+              {golfRounds.length > 0 && (
+                <span>{`// ${golfRounds.length} recent round${
+                  golfRounds.length === 1 ? "" : "s"
+                }`}</span>
+              )}
+            </div>
+            <GolfSection rounds={golfRounds} />
           </section>
 
           {/* ── READING ── */}

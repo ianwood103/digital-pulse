@@ -417,6 +417,70 @@ section {
   margin: 20px 0;
 }
 
+/* ── GOLF ── */
+.golf-list { display: flex; flex-direction: column; }
+
+.golf-round {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+.golf-round:first-child { padding-top: 4px; }
+
+.golf-round-head { margin-bottom: 14px; }
+
+.golf-course {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 4px;
+  transition: color 0.15s;
+}
+.golf-course::after {
+  content: ' ↗';
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.golf-course:hover { color: var(--blue); }
+.golf-course:hover::after { opacity: 0.6; }
+
+.golf-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 300;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.golf-photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.golf-photos[data-count='1'] { grid-template-columns: minmax(0, 420px); }
+.golf-photos[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
+
+.golf-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--blue-light);
+}
+
+.golf-photo-img {
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.golf-photo:hover .golf-photo-img { transform: scale(1.04); }
+
 .section-msg {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1340,6 +1404,9 @@ section {
   .project-row-loader { grid-column: 1; grid-row: auto; align-self: start; }
   .skills-grid { grid-template-columns: 1fr; }
   .pulse-grid { grid-template-columns: 1fr; }
+  .golf-photos,
+  .golf-photos[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
+  .golf-photos[data-count='1'] { grid-template-columns: 1fr; }
   .now-headline { font-size: 36px; }
   .now-bio { max-width: 100%; }
   .post-main { padding: 48px 24px 80px; }
@@ -1350,6 +1417,7 @@ section {
 
 @media (max-width: 480px) {
   .now-headline { font-size: 30px; word-break: break-word; }
+  .golf-course { font-size: 17px; }
   .sidebar { padding: 24px 20px; }
   .main { padding: 32px 20px 64px; }
   .post-main { padding: 36px 20px 64px; }
