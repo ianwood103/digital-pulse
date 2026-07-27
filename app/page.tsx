@@ -95,6 +95,7 @@ export default async function Home() {
           <section id="now" className="reveal">
             <div className="pulse-grid">
               <PulseCard kind="run" run={runs[0]} />
+              <PulseCard kind="golf" round={golfRounds[0]} />
               <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
               <PulseCard kind="post" post={posts[0]} />
             </div>

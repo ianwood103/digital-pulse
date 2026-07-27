@@ -11,7 +11,7 @@ Rather than acting like a static portfolio, the app blends authored content with
 
 ## What the Site Includes
 
-- **Now**: a top-level summary with pulse cards for the latest run, current book, and newest post
+- **Now**: a top-level summary with pulse cards for the latest run, latest golf round, current book, and newest post
 - **Running**: recent run history plus monthly rollups for mileage, pace, and time on feet
 - **Golf**: recent rounds with the course played and the photos attached to each Strava activity
 - **Reading**: currently reading, to-read, and books finished in 2026

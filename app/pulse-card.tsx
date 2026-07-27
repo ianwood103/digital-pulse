@@ -7,10 +7,11 @@ import {
 } from "./lib/format";
 import type { BookItem } from "./lib/books";
 import type { Post } from "./lib/posts";
-import type { Run } from "./lib/strava";
+import type { GolfRound, Run } from "./lib/strava";
 
 type PulseCardProps =
   | { kind: "run"; run?: Run }
+  | { kind: "golf"; round?: GolfRound }
   | { kind: "reading"; book?: BookItem }
   | { kind: "post"; post?: Post };
 
@@ -18,7 +19,7 @@ function PulseLabel({
   color,
   children,
 }: {
-  color?: "orange" | "green";
+  color?: "orange" | "green" | "grass";
   children: React.ReactNode;
 }) {
   return (
@@ -46,6 +47,26 @@ export default function PulseCard(props: PulseCardProps) {
               {run.name}
               <br />
               {formatShortDate(run.startDateLocal)}
+            </div>
+          </>
+        ) : (
+          <div className="pulse-skeleton">—</div>
+        )}
+      </a>
+    );
+  }
+
+  if (props.kind === "golf") {
+    const round = props.round;
+
+    return (
+      <a href="#golf" className="pulse-card" id="pcGolf">
+        <PulseLabel color="grass">Last Round</PulseLabel>
+        {round ? (
+          <>
+            <div className="pulse-card-title">{round.location}</div>
+            <div className="pulse-card-meta">
+              {formatShortDate(round.startDateLocal)}
             </div>
           </>
         ) : (
