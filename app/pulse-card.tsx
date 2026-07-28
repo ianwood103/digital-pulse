@@ -6,6 +6,7 @@ import {
   mpsToPaceString,
 } from "./lib/format";
 import type { BookItem } from "./lib/books";
+import type { MovieItem } from "./lib/movies";
 import type { Post } from "./lib/posts";
 import type { GolfRound, Run } from "./lib/strava";
 
@@ -13,13 +14,14 @@ type PulseCardProps =
   | { kind: "run"; run?: Run }
   | { kind: "golf"; round?: GolfRound }
   | { kind: "reading"; book?: BookItem }
+  | { kind: "movie"; movie?: MovieItem }
   | { kind: "post"; post?: Post };
 
 function PulseLabel({
   color,
   children,
 }: {
-  color?: "orange" | "green" | "grass";
+  color?: "orange" | "green" | "grass" | "film";
   children: React.ReactNode;
 }) {
   return (
@@ -86,6 +88,18 @@ export default function PulseCard(props: PulseCardProps) {
         {book?.author_name && (
           <div className="pulse-card-meta">{book.author_name}</div>
         )}
+      </a>
+    );
+  }
+
+  if (props.kind === "movie") {
+    const movie = props.movie;
+
+    return (
+      <a href="#movies" className="pulse-card" id="pcMovie">
+        <PulseLabel color="film">Last Watched</PulseLabel>
+        <div className="pulse-card-title">{movie?.title || "—"}</div>
+        {movie?.year && <div className="pulse-card-meta">{movie.year}</div>}
       </a>
     );
   }

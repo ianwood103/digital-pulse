@@ -2,12 +2,14 @@ export const revalidate = 3600;
 
 import Image from "next/image";
 import BookShelf from "./book-shelf";
+import FilmShelf from "./film-shelf";
 import GithubGraph from "./github-graph";
 import GolfSection from "./golf-section";
 import PulseCard from "./pulse-card";
 import RunningSection from "./running-section";
 import SidebarShell from "./sidebar-shell";
 import { fetchBooks } from "./lib/books";
+import { fetchMovies } from "./lib/movies";
 import { formatLongDate } from "./lib/format";
 import { getAllPosts } from "./lib/posts";
 import { fetchContributionYear } from "./lib/github";
@@ -24,16 +26,22 @@ const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 const WRITING_ENABLED = false;
 
 export default async function Home() {
-  const [booksData, runs, golfRounds, contributionData] = await Promise.all([
-    fetchBooks().catch(() => ({
-      currentlyReading: [],
-      wantToRead: [],
-      readThisYear: [],
-    })),
-    fetchRuns().catch(() => []),
-    fetchGolfRounds().catch(() => []),
-    fetchContributionYear("ianwood103"),
-  ]);
+  const [booksData, moviesData, runs, golfRounds, contributionData] =
+    await Promise.all([
+      fetchBooks().catch(() => ({
+        currentlyReading: [],
+        wantToRead: [],
+        readThisYear: [],
+      })),
+      fetchMovies().catch(() => ({
+        recent: [],
+        watchedThisYear: [],
+        year: new Date().getUTCFullYear(),
+      })),
+      fetchRuns().catch(() => []),
+      fetchGolfRounds().catch(() => []),
+      fetchContributionYear("ianwood103"),
+    ]);
 
   const posts = getAllPosts();
   const runMonthLabel = new Date().toLocaleDateString("en-US", {
@@ -72,6 +80,9 @@ export default async function Home() {
               <a href="#reading" data-section="reading">
                 Reading
               </a>
+              <a href="#movies" data-section="movies">
+                Movies
+              </a>
               {WRITING_ENABLED && (
                 <a href="#writing" data-section="writing">
                   Writing
@@ -104,6 +115,7 @@ export default async function Home() {
               <PulseCard kind="run" run={runs[0]} />
               <PulseCard kind="golf" round={golfRounds[0]} />
               <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
+              <PulseCard kind="movie" movie={moviesData.recent[0]} />
               {WRITING_ENABLED && <PulseCard kind="post" post={posts[0]} />}
             </div>
 
@@ -159,6 +171,21 @@ export default async function Home() {
               currentlyReading={booksData.currentlyReading}
               wantToRead={booksData.wantToRead}
               readThisYear={booksData.readThisYear}
+            />
+          </section>
+
+          {/* ── MOVIES ── */}
+          <section id="movies" className="reveal">
+            <div className="section-label">
+              Movies
+              {moviesData.watchedThisYear.length > 0 && (
+                <span>{`// ${moviesData.watchedThisYear.length} in ${moviesData.year}`}</span>
+              )}
+            </div>
+            <FilmShelf
+              recent={moviesData.recent}
+              watchedThisYear={moviesData.watchedThisYear}
+              year={moviesData.year}
             />
           </section>
 
