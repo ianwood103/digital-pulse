@@ -71,7 +71,11 @@ async function getAccessToken(): Promise<string | null> {
         refresh_token: refreshToken,
         grant_type: "refresh_token",
       }),
-      cache: "no-store",
+      // Deliberately left uncached rather than `no-store`: a no-store fetch
+      // opts the whole page out of static rendering, which turns every visit
+      // into a full re-render of every section. POSTs aren't stored in the
+      // data cache anyway, so this still runs on each regeneration — and
+      // `tokenCache` above covers reuse within a single render.
     });
 
     if (!res.ok) {

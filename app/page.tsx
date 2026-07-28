@@ -26,23 +26,24 @@ const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 const WRITING_ENABLED = false;
 
 export default async function Home() {
-  const [booksData, moviesData, runs, golfRounds] = await Promise.all([
-    fetchBooks().catch(() => ({
-      currentlyReading: [],
-      wantToRead: [],
-      readThisYear: [],
-    })),
-    fetchMovies().catch(() => ({
-      recent: [],
-      watchedThisYear: [],
-      year: new Date().getUTCFullYear(),
-    })),
-    fetchRuns().catch(() => []),
-    fetchGolfRounds().catch(() => []),
-  ]);
+  const [booksData, moviesData, runs, golfRounds, contributionData] =
+    await Promise.all([
+      fetchBooks().catch(() => ({
+        currentlyReading: [],
+        wantToRead: [],
+        readThisYear: [],
+      })),
+      fetchMovies().catch(() => ({
+        recent: [],
+        watchedThisYear: [],
+        year: new Date().getUTCFullYear(),
+      })),
+      fetchRuns().catch(() => []),
+      fetchGolfRounds().catch(() => []),
+      fetchContributionYear("ianwood103"),
+    ]);
 
   const posts = getAllPosts();
-  const contributionData = await fetchContributionYear("ianwood103");
   const runMonthLabel = new Date().toLocaleDateString("en-US", {
     month: "long",
   });
