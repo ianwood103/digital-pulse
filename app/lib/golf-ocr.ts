@@ -17,6 +17,9 @@ type CachedGolfOcrResult = GolfOcrResult & {
 const SCORE_THRESHOLDS = [120, 118, 122, 110, 125];
 const MIN_SCORE = 59;
 const MAX_SCORE = 160;
+// Bump when the parse/crop logic changes so stale disk cache entries (e.g.
+// weather temps misread as gross scores) are ignored.
+const CACHE_VERSION = "v2";
 
 type TesseractWorker = Awaited<ReturnType<typeof import("tesseract.js").createWorker>>;
 
@@ -77,7 +80,10 @@ async function resolveCacheDir(): Promise<string> {
 }
 
 function cacheKeyFor(source: string): string {
-  return createHash("sha256").update(source).digest("hex").slice(0, 32);
+  return createHash("sha256")
+    .update(`${CACHE_VERSION}:${source}`)
+    .digest("hex")
+    .slice(0, 32);
 }
 
 async function readCache(key: string): Promise<CachedGolfOcrResult | null> {
@@ -137,17 +143,38 @@ async function recognizeText(image: Buffer): Promise<string> {
   return text;
 }
 
+function scrubWeatherNoise(text: string): string {
+  // These cards put weather in the corner ("2 mph, 85°F"). That temperature
+  // is a common false positive for gross score, so strip it before parsing.
+  return text
+    .replace(/\b\d{1,3}\s*mph\b/gi, " ")
+    .replace(/\b\d{2,3}\s*°?\s*F\b/gi, " ")
+    .replace(/\b\d{2,3}\s*°?\s*C\b/gi, " ");
+}
+
 function parseScore(text: string): number | null {
-  const grossIdx = text.search(/Gross\s*Score/i);
-  const searchIn = grossIdx >= 0 ? text.slice(0, grossIdx) : text;
+  const cleaned = scrubWeatherNoise(text);
+  const grossIdx = cleaned.search(/Gross\s*Score/i);
+  const searchIn = grossIdx >= 0 ? cleaned.slice(0, grossIdx) : cleaned;
+
+  // Prefer a 2–3 digit total sitting immediately before "Gross Score".
+  if (grossIdx >= 0) {
+    const before = cleaned.slice(0, grossIdx);
+    const nearGross = [
+      ...before.matchAll(/(\d{2,3})(?:\s|[^\d]){0,16}$/g),
+    ].map((m) => Number(m[1]));
+    const near = nearGross.filter((n) => n >= MIN_SCORE && n <= MAX_SCORE);
+    if (near.length > 0) return near[near.length - 1];
+  }
+
   const nums = [...searchIn.matchAll(/\b(\d{2,3})\b/g)].map((m) =>
     Number(m[1])
   );
   const plausible = nums.filter((n) => n >= MIN_SCORE && n <= MAX_SCORE);
   if (plausible.length > 0) return plausible[plausible.length - 1];
 
-  // Fallback: any plausible golf total in the full region text.
-  const all = [...text.matchAll(/\b(\d{2,3})\b/g)]
+  // Fallback: any plausible golf total in the full (weather-scrubbed) text.
+  const all = [...cleaned.matchAll(/\b(\d{2,3})\b/g)]
     .map((m) => Number(m[1]))
     .filter((n) => n >= MIN_SCORE && n <= MAX_SCORE);
   return all[0] ?? null;
@@ -195,6 +222,9 @@ async function extractScore(buffer: Buffer): Promise<number | null> {
   const height = meta.height;
   if (!width || !height) return null;
 
+  // Empirically the gross total lives in this band on the generated cards.
+  // Cropping tighter cuts off the leading "1" in "118"; starting higher
+  // pulls in weather ("85°F") which we also scrub in parseScore.
   const extract = {
     left: Math.floor(width * 0.15),
     top: Math.floor(height * 0.14),

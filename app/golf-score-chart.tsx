@@ -6,14 +6,19 @@ function shortDate(iso: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export default function GolfScoreChart({ rounds }: { rounds: GolfRound[] }) {
+export default function GolfScoreChart({
+  course,
+  rounds,
+}: {
+  course: string;
+  rounds: GolfRound[];
+}) {
   const points = rounds
     .filter((r) => typeof r.grossScore === "number")
     .map((r) => ({
       id: r.id,
       score: r.grossScore as number,
       date: r.startDateLocal,
-      course: r.location,
     }))
     // Chronological for the line (oldest → newest)
     .sort((a, b) => a.date.localeCompare(b.date));
@@ -22,7 +27,7 @@ export default function GolfScoreChart({ rounds }: { rounds: GolfRound[] }) {
 
   const width = 640;
   const height = 220;
-  const pad = { top: 24, right: 20, bottom: 36, left: 40 };
+  const pad = { top: 28, right: 20, bottom: 36, left: 40 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
 
@@ -46,13 +51,18 @@ export default function GolfScoreChart({ rounds }: { rounds: GolfRound[] }) {
     .join(" ");
 
   const ticks = [yMin, Math.round((yMin + yMax) / 2), yMax];
+  const latest = points[points.length - 1];
 
   return (
-    <div className="golf-score-chart" aria-label="Gross score over time">
+    <div
+      className="golf-score-chart"
+      aria-label={`Gross score over time at ${course}`}
+    >
       <div className="golf-score-chart-head">
-        <div className="golf-score-chart-title">Score over time</div>
+        <div className="golf-score-chart-title">{course}</div>
         <div className="golf-score-chart-sub">
-          Gross score from OCR&apos;d scorecards
+          {points.length} round{points.length === 1 ? "" : "s"}
+          {latest ? ` · latest ${latest.score}` : ""}
         </div>
       </div>
       <svg
@@ -91,7 +101,7 @@ export default function GolfScoreChart({ rounds }: { rounds: GolfRound[] }) {
               className="golf-score-dot"
             >
               <title>
-                {p.score} · {p.course} · {shortDate(p.date)}
+                {p.score} · {shortDate(p.date)}
               </title>
             </circle>
             <text

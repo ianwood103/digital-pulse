@@ -420,58 +420,13 @@ section {
 }
 
 /* ── GOLF ── */
-.golf-list { display: flex; flex-direction: column; }
-
-.golf-round {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--border);
-}
-.golf-round:first-child { padding-top: 4px; }
-
-.golf-round-head { margin-bottom: 14px; }
-
-.golf-course {
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  color: var(--text);
-  text-decoration: none;
-  margin-bottom: 4px;
-  transition: color 0.15s;
-}
-a.golf-course::after {
-  content: ' ↗';
-  font-size: 11px;
-  color: var(--muted);
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-a.golf-course:hover { color: var(--blue); }
-a.golf-course:hover::after { opacity: 0.6; }
-
-.golf-meta {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--muted);
-  font-weight: 300;
+.golf-list {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.golf-score-pill {
-  color: #15803d;
-  background: #edf7ef;
-  border: 1px solid #c7e6cf;
-  border-radius: 2px;
-  padding: 1px 6px;
-  letter-spacing: 0.03em;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .golf-score-chart {
-  margin-bottom: 28px;
   padding: 18px 18px 8px;
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -519,14 +474,14 @@ a.golf-course:hover::after { opacity: 0.6; }
 }
 
 .golf-score-line {
-  stroke: #15803d;
+  stroke: var(--blue);
   stroke-width: 2.25;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
 .golf-score-dot {
-  fill: #15803d;
+  fill: var(--blue);
   stroke: #fff;
   stroke-width: 1.5;
 }
@@ -537,26 +492,6 @@ a.golf-course:hover::after { opacity: 0.6; }
   font-size: 11px;
   font-weight: 500;
 }
-
-.golf-photos {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: 10px;
-}
-
-/* Falls back to portrait — these photos are always scorecards. The real
-   ratio is set per photo inline once Strava reports the dimensions. */
-.golf-photo {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  border-radius: 3px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-}
-
-.golf-photo-img { object-fit: contain; }
 
 .section-msg {
   font-family: var(--font-mono);
@@ -1481,7 +1416,6 @@ a.golf-course:hover::after { opacity: 0.6; }
   .project-row-loader { grid-column: 1; grid-row: auto; align-self: start; }
   .skills-grid { grid-template-columns: 1fr; }
   .pulse-grid { grid-template-columns: 1fr; }
-  .golf-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .now-headline { font-size: 36px; }
   .now-bio { max-width: 100%; }
   .post-main { padding: 48px 24px 80px; }

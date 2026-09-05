@@ -44,6 +44,12 @@ export default async function Home() {
     ]);
 
   const posts = getAllPosts();
+  const scoredGolfRounds = golfRounds.filter(
+    (r) => typeof r.grossScore === "number"
+  );
+  const golfCourseCount = new Set(
+    scoredGolfRounds.map((r) => r.location.trim().toLowerCase())
+  ).size;
   const runMonthLabel = new Date().toLocaleDateString("en-US", {
     month: "long",
   });
@@ -155,9 +161,9 @@ export default async function Home() {
           <section id="golf" className="reveal">
             <div className="section-label">
               Golf
-              {golfRounds.length > 0 && (
-                <span>{`// ${golfRounds.length} recent round${
-                  golfRounds.length === 1 ? "" : "s"
+              {golfCourseCount > 0 && (
+                <span>{`// ${golfCourseCount} course${
+                  golfCourseCount === 1 ? "" : "s"
                 }`}</span>
               )}
             </div>
