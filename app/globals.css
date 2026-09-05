@@ -489,7 +489,7 @@ section {
 .golf-score-value {
   fill: var(--text);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 

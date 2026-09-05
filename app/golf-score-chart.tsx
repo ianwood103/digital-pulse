@@ -34,9 +34,13 @@ export default function GolfScoreChart({
   const scores = points.map((p) => p.score);
   const minScore = Math.min(...scores);
   const maxScore = Math.max(...scores);
-  const span = Math.max(maxScore - minScore, 8);
-  const yMin = Math.max(0, Math.floor((minScore - span * 0.2) / 2) * 2);
-  const yMax = Math.ceil((maxScore + span * 0.2) / 2) * 2;
+  // Keep enough headroom that a lone score (e.g. 118) doesn't collapse the
+  // axis to 116–120 and sit on top of the middle tick — that reads as if the
+  // score were skipped. Aim for ~10 strokes of padding and nice step marks.
+  const rawPad = Math.max(10, Math.ceil((maxScore - minScore) * 0.25));
+  const yMin = Math.max(0, Math.floor((minScore - rawPad) / 5) * 5);
+  const yMax = Math.ceil((maxScore + rawPad) / 5) * 5;
+  const yRange = Math.max(yMax - yMin, 5);
 
   const xFor = (index: number) =>
     pad.left +
@@ -44,13 +48,18 @@ export default function GolfScoreChart({
       ? innerW / 2
       : (index / (points.length - 1)) * innerW);
   const yFor = (score: number) =>
-    pad.top + ((yMax - score) / (yMax - yMin)) * innerH;
+    pad.top + ((yMax - score) / yRange) * innerH;
 
   const line = points
     .map((p, i) => `${i === 0 ? "M" : "L"} ${xFor(i)} ${yFor(p.score)}`)
     .join(" ");
 
-  const ticks = [yMin, Math.round((yMin + yMax) / 2), yMax];
+  // Prefer ~4 evenly spaced ticks on a 5-stroke grid; always include ends.
+  const step = Math.max(5, Math.ceil(yRange / 3 / 5) * 5);
+  const ticks: number[] = [];
+  for (let t = yMin; t <= yMax; t += step) ticks.push(t);
+  if (ticks[ticks.length - 1] !== yMax) ticks.push(yMax);
+
   const latest = points[points.length - 1];
 
   return (
@@ -90,14 +99,16 @@ export default function GolfScoreChart({
           </g>
         ))}
 
-        <path d={line} className="golf-score-line" fill="none" />
+        {points.length > 1 && (
+          <path d={line} className="golf-score-line" fill="none" />
+        )}
 
         {points.map((p, i) => (
           <g key={p.id}>
             <circle
               cx={xFor(i)}
               cy={yFor(p.score)}
-              r={4.5}
+              r={5}
               className="golf-score-dot"
             >
               <title>
@@ -106,7 +117,7 @@ export default function GolfScoreChart({
             </circle>
             <text
               x={xFor(i)}
-              y={yFor(p.score) - 10}
+              y={yFor(p.score) - 12}
               textAnchor="middle"
               className="golf-score-value"
             >
