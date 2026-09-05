@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OCR prototype cache (gross score + course extracted from scorecards)
+.cache/
+
+# Tesseract language data downloaded at runtime
+eng.traineddata
+*.traineddata

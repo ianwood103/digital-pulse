@@ -440,15 +440,15 @@ section {
   margin-bottom: 4px;
   transition: color 0.15s;
 }
-.golf-course::after {
+a.golf-course::after {
   content: ' ↗';
   font-size: 11px;
   color: var(--muted);
   opacity: 0;
   transition: opacity 0.15s;
 }
-.golf-course:hover { color: var(--blue); }
-.golf-course:hover::after { opacity: 0.6; }
+a.golf-course:hover { color: var(--blue); }
+a.golf-course:hover::after { opacity: 0.6; }
 
 .golf-meta {
   font-family: var(--font-mono);
@@ -458,6 +458,84 @@ section {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.golf-score-pill {
+  color: #15803d;
+  background: #edf7ef;
+  border: 1px solid #c7e6cf;
+  border-radius: 2px;
+  padding: 1px 6px;
+  letter-spacing: 0.03em;
+}
+
+.golf-score-chart {
+  margin-bottom: 28px;
+  padding: 18px 18px 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.golf-score-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  margin-bottom: 8px;
+}
+
+.golf-score-chart-title {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.golf-score-chart-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+.golf-score-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.golf-score-grid {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.golf-score-axis {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.golf-score-line {
+  stroke: #15803d;
+  stroke-width: 2.25;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.golf-score-dot {
+  fill: #15803d;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.golf-score-value {
+  fill: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .golf-photos {

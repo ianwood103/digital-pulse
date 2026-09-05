@@ -26,6 +26,8 @@ export interface GolfRound {
   elapsedTimeSeconds: number;
   distanceMeters: number;
   photos: GolfPhoto[];
+  /** Gross score OCR'd from the attached scorecard photo. */
+  grossScore?: number;
 }
 
 export interface MonthStats {
@@ -250,27 +252,109 @@ async function fetchActivityPhotos(
   }
 }
 
-export async function fetchGolfRounds(limit = 6): Promise<GolfRound[]> {
+async function withOcrScore(round: GolfRound): Promise<GolfRound> {
+  const scorecard = round.photos[0];
+  if (!scorecard?.url) return round;
+
+  const { extractGolfScorecard } = await import("./golf-ocr");
+  const ocr = await extractGolfScorecard(
+    scorecard.url,
+    `photo:${scorecard.id}`
+  );
+
+  return {
+    ...round,
+    location: ocr.course || round.location,
+    grossScore: ocr.grossScore ?? undefined,
+  };
+}
+
+/**
+ * Local fixture for the OCR prototype when Strava isn't connected. Runs the
+ * checked-in scorecard sample through the same Tesseract path production will
+ * use on Strava media.
+ */
+async function fetchFixtureGolfRounds(): Promise<GolfRound[]> {
+  if (process.env.GOLF_OCR_FIXTURE !== "1") return [];
+
+  const path = await import("path");
+  const fixturePath = path.join(
+    process.cwd(),
+    "public",
+    "fixtures",
+    "golf-scorecard.jpg"
+  );
+
   try {
+    const { extractGolfScorecard, withGolfOcrSession } = await import(
+      "./golf-ocr"
+    );
+    const ocr = await withGolfOcrSession(() =>
+      extractGolfScorecard(fixturePath, "fixture:golf-scorecard")
+    );
+
+    return [
+      {
+        id: 0,
+        location: ocr.course || "Jimmy Clay",
+        startDateLocal: "2026-08-23T12:00:00",
+        movingTimeSeconds: 0,
+        elapsedTimeSeconds: 0,
+        distanceMeters: 0,
+        photos: [
+          {
+            id: "fixture-golf-scorecard",
+            url: "/fixtures/golf-scorecard.jpg",
+            width: 1179,
+            height: 1925,
+            caption: "OCR fixture scorecard",
+          },
+        ],
+        grossScore: ocr.grossScore ?? undefined,
+      },
+    ];
+  } catch (err) {
+    console.warn(
+      `Golf OCR fixture failed: ${
+        err instanceof Error ? err.message : String(err)
+      }`
+    );
+    return [];
+  }
+}
+
+export async function fetchGolfRounds(limit = 12): Promise<GolfRound[]> {
+  try {
+    const accessToken = await getAccessToken();
+    if (!accessToken) return await fetchFixtureGolfRounds();
+
     const activities = await fetchRecentActivities();
     const rounds = activities.filter((a) => isSport(a, "Golf")).slice(0, limit);
+    const { withGolfOcrSession } = await import("./golf-ocr");
 
-    return await Promise.all(
-      rounds.map(async (activity) => ({
-        id: activity.id as number,
-        location: (activity.name as string) || "Untitled round",
-        startDateLocal: activity.start_date_local as string,
-        movingTimeSeconds: (activity.moving_time as number) ?? 0,
-        elapsedTimeSeconds: (activity.elapsed_time as number) ?? 0,
-        distanceMeters: (activity.distance as number) ?? 0,
-        photos: await fetchActivityPhotos(activity),
-      }))
-    );
+    // OCR sequentially so one Tesseract worker can be reused without pegging
+    // CPU on cold cache misses.
+    return await withGolfOcrSession(async () => {
+      const enriched: GolfRound[] = [];
+      for (const activity of rounds) {
+        const base: GolfRound = {
+          id: activity.id as number,
+          location: (activity.name as string) || "Untitled round",
+          startDateLocal: activity.start_date_local as string,
+          movingTimeSeconds: (activity.moving_time as number) ?? 0,
+          elapsedTimeSeconds: (activity.elapsed_time as number) ?? 0,
+          distanceMeters: (activity.distance as number) ?? 0,
+          photos: await fetchActivityPhotos(activity),
+        };
+        enriched.push(await withOcrScore(base));
+      }
+      return enriched;
+    });
   } catch (err) {
     console.warn(
       `Strava fetchGolfRounds error: ${err instanceof Error ? err.message : String(err)}`
     );
-    return [];
+    return await fetchFixtureGolfRounds();
   }
 }
 

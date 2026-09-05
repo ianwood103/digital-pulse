@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GolfScoreChart from "./golf-score-chart";
 import { formatLongDate, metersToMiles } from "./lib/format";
 import type { GolfRound } from "./lib/strava";
 
@@ -17,6 +18,8 @@ export default function GolfSection({ rounds }: { rounds: GolfRound[] }) {
 
   return (
     <div className="golf-list">
+      <GolfScoreChart rounds={rounds} />
+
       {rounds.map((round) => {
         const seconds = round.movingTimeSeconds || round.elapsedTimeSeconds;
         const miles = metersToMiles(round.distanceMeters);
@@ -24,15 +27,24 @@ export default function GolfSection({ rounds }: { rounds: GolfRound[] }) {
         return (
           <article className="golf-round" key={round.id}>
             <div className="golf-round-head">
-              <a
-                className="golf-course"
-                href={`https://www.strava.com/activities/${round.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {round.location}
-              </a>
+              {round.id ? (
+                <a
+                  className="golf-course"
+                  href={`https://www.strava.com/activities/${round.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {round.location}
+                </a>
+              ) : (
+                <div className="golf-course">{round.location}</div>
+              )}
               <div className="golf-meta">
+                {typeof round.grossScore === "number" && (
+                  <span className="golf-score-pill">
+                    Gross {round.grossScore}
+                  </span>
+                )}
                 <span>{formatLongDate(round.startDateLocal)}</span>
                 {seconds > 0 && <span>{formatTimeOnCourse(seconds)}</span>}
                 {miles >= 0.1 && <span>{miles.toFixed(1)} mi walked</span>}

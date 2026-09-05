@@ -66,7 +66,11 @@ export default function PulseCard(props: PulseCardProps) {
         <PulseLabel color="grass">Last Round</PulseLabel>
         {round ? (
           <>
-            <div className="pulse-card-title">{round.location}</div>
+            <div className="pulse-card-title">
+              {typeof round.grossScore === "number"
+                ? `${round.grossScore} · ${round.location}`
+                : round.location}
+            </div>
             <div className="pulse-card-meta">
               {formatShortDate(round.startDateLocal)}
             </div>
