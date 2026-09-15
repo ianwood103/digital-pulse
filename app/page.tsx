@@ -16,7 +16,6 @@ import { fetchContributionYear } from "./lib/github";
 import { fetchGolfRounds, fetchRuns } from "./lib/strava";
 
 const EMAIL = "ian.albert.wood@gmail.com";
-const PHONE = "770-656-1244";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 
@@ -102,7 +101,6 @@ export default async function Home() {
                 LinkedIn
               </a>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-              <a href={`tel:${PHONE.replace(/\D/g, "")}`}>{PHONE}</a>
             </div>
             <div className="location">Austin, TX</div>
           </div>
