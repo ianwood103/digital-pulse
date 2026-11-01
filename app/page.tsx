@@ -125,7 +125,12 @@ export default async function Home() {
             >
               <PulseCard kind="run" run={runs[0]} />
               {GOLF_ENABLED && <PulseCard kind="golf" round={golfRounds[0]} />}
-              <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
+              <PulseCard
+                kind="reading"
+                book={
+                  booksData.currentlyReading[0] ?? booksData.readThisYear[0]
+                }
+              />
               {MOVIES_ENABLED && (
                 <PulseCard kind="movie" movie={moviesData.recent[0]} />
               )}
