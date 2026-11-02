@@ -24,6 +24,11 @@ const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
 // is untouched, this just stops it from rendering.
 const WRITING_ENABLED = false;
 
+// Same idea for Golf and Movies: leave the data/components in place so
+// these sections can be flipped back on without rewriting the page.
+const GOLF_ENABLED = false;
+const MOVIES_ENABLED = false;
+
 export default async function Home() {
   const [booksData, moviesData, runs, golfRounds, contributionData] =
     await Promise.all([
@@ -73,15 +78,19 @@ export default async function Home() {
               <a href="#running" data-section="running">
                 Running
               </a>
-              <a href="#golf" data-section="golf">
-                Golf
-              </a>
+              {GOLF_ENABLED && (
+                <a href="#golf" data-section="golf">
+                  Golf
+                </a>
+              )}
               <a href="#reading" data-section="reading">
                 Reading
               </a>
-              <a href="#movies" data-section="movies">
-                Movies
-              </a>
+              {MOVIES_ENABLED && (
+                <a href="#movies" data-section="movies">
+                  Movies
+                </a>
+              )}
               {WRITING_ENABLED && (
                 <a href="#writing" data-section="writing">
                   Writing
@@ -109,11 +118,22 @@ export default async function Home() {
         <main className="main">
           {/* ── NOW ── */}
           <section id="now" className="reveal">
-            <div className="pulse-grid">
+            <div
+              className={`pulse-grid${
+                !GOLF_ENABLED && !MOVIES_ENABLED ? " pulse-grid--2" : ""
+              }`}
+            >
               <PulseCard kind="run" run={runs[0]} />
-              <PulseCard kind="golf" round={golfRounds[0]} />
-              <PulseCard kind="reading" book={booksData.currentlyReading[0]} />
-              <PulseCard kind="movie" movie={moviesData.recent[0]} />
+              {GOLF_ENABLED && <PulseCard kind="golf" round={golfRounds[0]} />}
+              <PulseCard
+                kind="reading"
+                book={
+                  booksData.currentlyReading[0] ?? booksData.readThisYear[0]
+                }
+              />
+              {MOVIES_ENABLED && (
+                <PulseCard kind="movie" movie={moviesData.recent[0]} />
+              )}
               {WRITING_ENABLED && <PulseCard kind="post" post={posts[0]} />}
             </div>
 
@@ -150,17 +170,19 @@ export default async function Home() {
           </section>
 
           {/* ── GOLF ── */}
-          <section id="golf" className="reveal">
-            <div className="section-label">
-              Golf
-              {golfRounds.length > 0 && (
-                <span>{`// ${golfRounds.length} recent round${
-                  golfRounds.length === 1 ? "" : "s"
-                }`}</span>
-              )}
-            </div>
-            <GolfSection rounds={golfRounds} />
-          </section>
+          {GOLF_ENABLED && (
+            <section id="golf" className="reveal">
+              <div className="section-label">
+                Golf
+                {golfRounds.length > 0 && (
+                  <span>{`// ${golfRounds.length} recent round${
+                    golfRounds.length === 1 ? "" : "s"
+                  }`}</span>
+                )}
+              </div>
+              <GolfSection rounds={golfRounds} />
+            </section>
+          )}
 
           {/* ── READING ── */}
           <section id="reading" className="reveal">
@@ -173,19 +195,21 @@ export default async function Home() {
           </section>
 
           {/* ── MOVIES ── */}
-          <section id="movies" className="reveal">
-            <div className="section-label">
-              Movies
-              {moviesData.watchedThisYear.length > 0 && (
-                <span>{`// ${moviesData.watchedThisYear.length} in ${moviesData.year}`}</span>
-              )}
-            </div>
-            <FilmShelf
-              recent={moviesData.recent}
-              watchedThisYear={moviesData.watchedThisYear}
-              year={moviesData.year}
-            />
-          </section>
+          {MOVIES_ENABLED && (
+            <section id="movies" className="reveal">
+              <div className="section-label">
+                Movies
+                {moviesData.watchedThisYear.length > 0 && (
+                  <span>{`// ${moviesData.watchedThisYear.length} in ${moviesData.year}`}</span>
+                )}
+              </div>
+              <FilmShelf
+                recent={moviesData.recent}
+                watchedThisYear={moviesData.watchedThisYear}
+                year={moviesData.year}
+              />
+            </section>
+          )}
 
           {/* ── WRITING ── */}
           {WRITING_ENABLED && (

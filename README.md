@@ -73,13 +73,7 @@ Photos are rendered straight from Strava's CDN at the size Strava serves them, s
 
 ### Goodreads
 
-Reading shelves are pulled from Goodreads RSS feeds for:
-
-- currently reading
-- to-read
-- read
-
-The app currently filters the `read` shelf down to books finished in 2026.
+Goodreads retired public RSS feeds in October 2026. Reading data now comes from the still-public grid widget (currently-reading and to-read) plus the Year in Books page for titles finished this calendar year.
 
 ### Writing
 

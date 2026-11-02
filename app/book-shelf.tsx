@@ -92,7 +92,9 @@ function BookThumb({ book }: { book: BookItem }) {
       {book.author_name && (
         <div className="book-thumb-author">{book.author_name}</div>
       )}
-      <span className="book-stars">{stars(rating)}</span>
+      {book.user_rating && (
+        <span className="book-stars">{stars(rating)}</span>
+      )}
     </>
   );
 
