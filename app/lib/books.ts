@@ -135,7 +135,7 @@ function titlesMatch(widgetTitle: string, yearTitle: string): boolean {
 
 async function fetchShelf(
   shelf: string,
-  sort: "date_read" | "date_added"
+  sort: "date_read" | "date_added" | "date_updated"
 ): Promise<BookItem[]> {
   const body = await fetchText(widgetUrl(shelf, sort));
   return body ? parseWidget(body) : [];
