@@ -895,6 +895,25 @@ section {
   margin-bottom: 12px;
 }
 
+.work-roles {
+  margin-bottom: 12px;
+}
+.work-role-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+}
+.work-roles .work-role {
+  margin-bottom: 0;
+}
+.work-role-dates {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--muted);
+}
+
 .work-desc {
   margin-bottom: 0;
 }

@@ -138,14 +138,12 @@ export default async function Home() {
             </div>
 
             <div className="now-headline">
-              Engineer. Reader.
-              <br />
-              <em>Builder.</em>
+              Hey, I&apos;m <em>Ian.</em>
             </div>
 
             <p className="now-bio">
-              I&apos;m a software engineer at Tesla in Austin. I read a lot —
-              philosophy mostly, Stoics in particular. I follow baseball with
+              I&apos;m a software engineer at Tesla in Austin. I read a
+              lot, mostly philosophy and whatever else grabs me. I follow baseball with
               an investment that probably isn&apos;t warranted. I cook. I build
               side projects. I&apos;m the kind of person who goes unreasonably
               deep on things, and the things change often. This site is a
@@ -258,8 +256,19 @@ export default async function Home() {
                   Tesla{" "}
                   <span className="work-badge">Current</span>
                 </div>
-                <div className="work-role">
-                  Software Engineer — Factory Software
+                <div className="work-roles">
+                  <div className="work-role-line">
+                    <span className="work-role">
+                      Sr. Software Engineer — Factory Software
+                    </span>
+                    <span className="work-role-dates">Aug 2026 – Present</span>
+                  </div>
+                  <div className="work-role-line">
+                    <span className="work-role">
+                      Software Engineer — Factory Software
+                    </span>
+                    <span className="work-role-dates">Mar 2025 – Aug 2026</span>
+                  </div>
                 </div>
                 <div className="work-desc">
                   <p className="exp-paragraph">
