@@ -68,7 +68,7 @@ export default async function Home() {
               />
             </div>
             <div className="s-name">Ian Wood</div>
-            <div className="s-sub">Senior Software Engineer</div>
+            <div className="s-sub">Software Engineer</div>
 
             <nav id="mainNav">
               <div className="nav-indicator" id="navIndicator" />
