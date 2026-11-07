@@ -142,7 +142,7 @@ export default async function Home() {
             </div>
 
             <p className="now-bio">
-              I&apos;m a senior software engineer at Tesla in Austin. I read a
+              I&apos;m a software engineer at Tesla in Austin. I read a
               lot, mostly philosophy and whatever else grabs me. I follow baseball with
               an investment that probably isn&apos;t warranted. I cook. I build
               side projects. I&apos;m the kind of person who goes unreasonably
@@ -245,7 +245,7 @@ export default async function Home() {
 
             <div className="work-item">
               <div className="work-meta">
-                Aug 2026
+                Mar 2025
                 <br />— Present
                 <br />
                 <br />
@@ -256,37 +256,19 @@ export default async function Home() {
                   Tesla{" "}
                   <span className="work-badge">Current</span>
                 </div>
-                <div className="work-role">
-                  Senior Software Engineer — Factory Software
-                </div>
-                <div className="work-desc">
-                  <p className="exp-paragraph">
-                    Promoted to Senior in August 2026. Same team, bigger
-                    scope: owning the design and direction of the factory
-                    maintenance platform across Tesla&apos;s global factories.
-                  </p>
-                </div>
-                <div className="work-tags">
-                  <span className="tag">Go</span>
-                  <span className="tag">MySQL</span>
-                  <span className="tag">Kubernetes</span>
-                  <span className="tag">Kafka</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="work-item">
-              <div className="work-meta">
-                Mar 2025
-                <br />— Aug 2026
-                <br />
-                <br />
-                Austin, TX
-              </div>
-              <div>
-                <div className="work-company">Tesla</div>
-                <div className="work-role">
-                  Software Engineer — Factory Software
+                <div className="work-roles">
+                  <div className="work-role-line">
+                    <span className="work-role">
+                      Sr. Software Engineer — Factory Software
+                    </span>
+                    <span className="work-role-dates">Aug 2026 – Present</span>
+                  </div>
+                  <div className="work-role-line">
+                    <span className="work-role">
+                      Software Engineer — Factory Software
+                    </span>
+                    <span className="work-role-dates">Mar 2025 – Aug 2026</span>
+                  </div>
                 </div>
                 <div className="work-desc">
                   <p className="exp-paragraph">
