@@ -68,7 +68,7 @@ export default async function Home() {
               />
             </div>
             <div className="s-name">Ian Wood</div>
-            <div className="s-sub">Software Engineer</div>
+            <div className="s-sub">Senior Software Engineer</div>
 
             <nav id="mainNav">
               <div className="nav-indicator" id="navIndicator" />
@@ -138,14 +138,12 @@ export default async function Home() {
             </div>
 
             <div className="now-headline">
-              Engineer. Reader.
-              <br />
-              <em>Builder.</em>
+              Hey, I&apos;m <em>Ian.</em>
             </div>
 
             <p className="now-bio">
-              I&apos;m a software engineer at Tesla in Austin. I read a lot —
-              philosophy mostly, Stoics in particular. I follow baseball with
+              I&apos;m a senior software engineer at Tesla in Austin. I read a
+              lot, mostly philosophy and whatever else grabs me. I follow baseball with
               an investment that probably isn&apos;t warranted. I cook. I build
               side projects. I&apos;m the kind of person who goes unreasonably
               deep on things, and the things change often. This site is a
@@ -247,7 +245,7 @@ export default async function Home() {
 
             <div className="work-item">
               <div className="work-meta">
-                Mar 2025
+                Aug 2026
                 <br />— Present
                 <br />
                 <br />
@@ -258,6 +256,35 @@ export default async function Home() {
                   Tesla{" "}
                   <span className="work-badge">Current</span>
                 </div>
+                <div className="work-role">
+                  Senior Software Engineer — Factory Software
+                </div>
+                <div className="work-desc">
+                  <p className="exp-paragraph">
+                    Promoted to Senior in August 2026. Same team, bigger
+                    scope: owning the design and direction of the factory
+                    maintenance platform across Tesla&apos;s global factories.
+                  </p>
+                </div>
+                <div className="work-tags">
+                  <span className="tag">Go</span>
+                  <span className="tag">MySQL</span>
+                  <span className="tag">Kubernetes</span>
+                  <span className="tag">Kafka</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="work-item">
+              <div className="work-meta">
+                Mar 2025
+                <br />— Aug 2026
+                <br />
+                <br />
+                Austin, TX
+              </div>
+              <div>
+                <div className="work-company">Tesla</div>
                 <div className="work-role">
                   Software Engineer — Factory Software
                 </div>

@@ -23,7 +23,7 @@ export default function SidebarShell({ children }: Props) {
         onClick={() => setOpen((o) => !o)}
       >
         <span className="sidebar-mobile-name">Ian Wood</span>
-        <span className="sidebar-mobile-sub">Software Engineer</span>
+        <span className="sidebar-mobile-sub">Senior Software Engineer</span>
         <span className="sidebar-mobile-icon" aria-hidden="true">
           <svg
             viewBox="0 0 12 12"
