@@ -1,23 +1,21 @@
 # digital pulse
 
-`digital pulse` is Ian Wood's personal internet project built with Next.js 16, React 19, and Tailwind CSS 4. It includes portfolio material, but it is broader than a resume site: a living snapshot of what he is doing now across running, reading, writing, work, and GitHub activity.
+`digital pulse` is Ian Wood's personal internet project built with Next.js 16, React 19, and Tailwind CSS 4. It includes portfolio material, but it is broader than a resume site: a living snapshot of what he is doing now across running, reading, work, and GitHub activity.
 
 Rather than acting like a static portfolio, the app blends authored content with live data:
 
-- recent runs and golf rounds from Strava
-- book shelves from Goodreads RSS
-- writing pulled from local Markdown files
+- recent runs from Strava
+- book shelves from Goodreads
 - GitHub contribution activity from a public contributions API
 
 ## What the Site Includes
 
-- **Now**: a top-level summary with pulse cards for the latest run, latest golf round, current book, and newest post
+- **Now**: a top-level summary with pulse cards for the latest run and current book, plus a short bio
 - **Running**: recent run history plus monthly rollups for mileage, pace, and time on feet
-- **Golf**: recent rounds with the course played and the photos attached to each Strava activity
-- **Reading**: currently reading, to-read, and books finished in 2026
-- **Writing**: posts sourced from `content/posts/*.md`
-- **Work**: experience timeline and background
-- **GitHub activity**: contribution graph and summary stats
+- **Reading**: currently reading, to-read, and books finished this year
+- **Work**: experience, education, projects, recent GitHub activity, certifications, and skills
+
+Golf, Movies, and Writing sections still exist in the codebase but are hidden. They're toggled off via the `GOLF_ENABLED`, `MOVIES_ENABLED`, and `WRITING_ENABLED` flags at the top of `app/page.tsx`.
 
 ## Stack
 
@@ -25,9 +23,7 @@ Rather than acting like a static portfolio, the app blends authored content with
 - React 19
 - TypeScript
 - Tailwind CSS 4
-- `gray-matter` for Markdown frontmatter
-- `marked` for post rendering
-- `rss-parser` for Goodreads RSS feeds
+- `rss-parser`, `gray-matter`, and `marked` (used by the currently hidden Movies and Writing sections)
 
 ## Local Development
 
@@ -64,20 +60,11 @@ If these values are missing, the running section stays visible but renders a not
 
 ### Strava
 
-A single page of recent activities is fetched from the Strava API and shared by both sections:
-
-- **Running** filters the page to runs and calculates monthly summary stats.
-- **Golf** filters to `Golf` activities and, for each one, fetches the photos attached to that activity. The activity title is used as the course name, since rounds are always titled with where they were played. If the photo endpoint is unavailable, the section falls back to the primary photo on the activity summary.
-
-Photos are rendered straight from Strava's CDN at the size Strava serves them, so they bypass the Next.js image optimizer.
+A page of recent activities is fetched from the Strava API. The Running section filters it to runs and calculates monthly summary stats.
 
 ### Goodreads
 
 Goodreads retired public RSS feeds in October 2026. Reading data now comes from the still-public grid widget (currently-reading and to-read) plus the Year in Books page for titles finished this calendar year.
-
-### Writing
-
-Posts live in `content/posts/` as Markdown files with frontmatter. They are read from disk at build/request time and sorted newest-first.
 
 ### GitHub
 
@@ -87,58 +74,20 @@ Contribution data is fetched from `https://github-contributions-api.jogruber.de`
 
 ```text
 app/
-  page.tsx              Main homepage composition
+  page.tsx              Main homepage composition (section toggles live here)
+  sidebar-shell.tsx     Sidebar with nav and contact/resume links
   running-section.tsx   Running dashboard UI
-  golf-section.tsx      Golf rounds and activity photos
   book-shelf.tsx        Reading UI
   github-graph.tsx      GitHub contribution graph
   pulse-card.tsx        Summary cards in the hero section
   lib/
     books.ts            Goodreads ingestion
-    posts.ts            Markdown post loading
     github.ts           GitHub contribution fetcher
-    strava.ts           Strava auth, fetch, run stats, and golf rounds
+    strava.ts           Strava auth, fetch, and run stats
 
-content/posts/          Markdown writing archive
 public/                 Static images
 docs/mockup.html        Design/reference mockup
 ```
-
-## Writing a New Post
-
-Drop a Markdown file into `content/posts/`. The filename (minus `.md`) becomes the slug and URL: `content/posts/my-post.md` → `/posts/my-post`.
-
-The minimum viable post is just a heading and some prose:
-
-```md
-# My Post Title
-
-First paragraph here — this becomes the excerpt automatically.
-
-Rest of the post...
-```
-
-Everything is derived from the file:
-
-- **slug** — filename
-- **title** — first `# heading` (stripped from the rendered body), or a title-cased filename
-- **excerpt** — first paragraph, with markdown stripped
-- **readTime** — computed from word count (~220 wpm)
-- **date** — today, unless overridden
-
-Any of these can be overridden via YAML frontmatter when you want explicit control. `date` is the one you'll typically want to set so posts don't all stack on "today":
-
-```md
----
-date: 2026-04-23
----
-
-# My Post Title
-
-Body...
-```
-
-Frontmatter fields are all optional: `title`, `date`, `readTime`, `excerpt`. The post list on the homepage picks up new files automatically and sorts newest-first.
 
 ## Strava Setup
 
@@ -168,4 +117,3 @@ To obtain Strava credentials:
 
 - Strava responses are cached and revalidated periodically.
 - Goodreads and GitHub data are public-source reads and require no local secrets.
-- The README previously reflected the default Next.js starter; it now documents `digital pulse` as the actual application.
