@@ -18,6 +18,7 @@ import { fetchGolfRounds, fetchRuns } from "./lib/strava";
 const EMAIL = "ian.albert.wood@gmail.com";
 const GITHUB = "https://github.com/ianwood103";
 const LINKEDIN = "https://linkedin.com/in/ian-albert-wood";
+const RESUME = "https://ianwood103.github.io/resume/";
 
 // Toggle to bring the Writing section back on the frontend — the
 // underlying pipeline (app/lib/posts.ts, app/posts/[slug], content/posts/*)
@@ -108,6 +109,9 @@ export default async function Home() {
               </a>
               <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">
                 LinkedIn
+              </a>
+              <a href={RESUME} target="_blank" rel="noopener noreferrer">
+                Resume
               </a>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </div>
